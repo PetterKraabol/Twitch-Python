@@ -38,7 +38,7 @@ print(helix.video(318017128).title)
 
 
 # Video comments
-for comment in helix.video(318017128).comments:
+for comment in helix.video(318017128).comments():
     print(comment.commenter.display_name)
 
 
