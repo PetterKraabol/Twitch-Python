@@ -39,18 +39,20 @@ print(helix.video(318017128).title)
 
 # Video comments
 for comment in helix.video(318017128).comments:
-    print(comment['commenter']['display_name'])
+    print(comment.commenter.display_name)
+
 
 # Comments from multiple videos
 for video, comments in helix.videos([318017128, 317650435]).comments():
-    print(video)
     for comment in comments:
-        print(comment['commenter']['display_name'], comment['message']['body'])
+        print(comment.commenter.display_name, comment.message.body)
+
 
 # Comments from multiple videos from a user
 for video, comments in helix.user('sodapoppin').videos().comments():
         for comment in comments:
             print(comment.commenter.display_name, comment.message.body)
+
 
 # Comments from first 5 videos of multiple users
 for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
