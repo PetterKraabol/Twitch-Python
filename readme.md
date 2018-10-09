@@ -3,14 +3,14 @@
 [![Discord](https://user-images.githubusercontent.com/7288322/34471967-1df7808a-efbb-11e7-9088-ed0b04151291.png)](https://discord.gg/wZJFeXC)
 
 
-`Work in progress`
+`pip install twitch-python`
 
 Twitch Python provides API data to [PetterKraabol/Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader).
 
 ### Requirements
 
 * [Python 3.6 or newer](https://www.python.org/downloads/)
-* [A Twitch client ID](https://dev.twitch.tv/dashboard/apps)
+* [A Twitch client ID](https://glass.twitch.tv/console/apps)
 
 ### Usage
 

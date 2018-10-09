@@ -9,9 +9,8 @@ class Users(Resource['User']):
 
     def __init__(self, api: API, *args):
         super().__init__(api=api, path='users')
-        self._data = self._get(*args)
 
-    def _get(self, *args) -> List['helix.User']:
+        # Load data
         users: List[Union[str, int]] = []
         for user in args:
             users += [user] if type(user) in [str, int] else list(user)
@@ -25,7 +24,8 @@ class Users(Resource['User']):
             for user in user_list:
                 query += f'{param}={user}&'
 
-        return [helix.User(api=self._api, data=data) for data in self._api.get(self._path + query.rstrip('&'))['data']]
+        self._data = [helix.User(api=self._api, data=data) for data in
+                      self._api.get(self._path + query.rstrip('&'))['data']]
 
     def videos(self, **kwargs) -> Generator[Tuple['helix.User', 'helix.Videos'], None, None]:
         for user in self:

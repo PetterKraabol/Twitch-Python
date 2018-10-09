@@ -1,17 +1,19 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Dict
 
 import requests
 
+from twitch.cache import Cache
+
 
 class API:
-    SHARED_CACHE: Dict[str, dict] = {}
+    SHARED_CACHE: Cache = Cache()
 
     def __init__(self, base_url: str = None,
                  client_id: str = None,
                  rate_limit: int = None,
                  use_cache: bool = False,
-                 cache_duration: timedelta = timedelta(minutes=30)):
+                 cache_duration: timedelta = None):
         self.base_url: str = base_url
         self.rate_limit: int = rate_limit
         self.client_id: str = client_id
@@ -35,15 +37,13 @@ class API:
         url: str = self._url(path=path)
         cache_key: str = f'{method}:{path}'
 
-        if self.use_cache and not ignore_cache and cache_key in API.SHARED_CACHE and API.SHARED_CACHE[cache_key][
-            'cache_expiration'] > datetime.now():
-            return API.SHARED_CACHE[cache_key]
+        if self.use_cache and not ignore_cache and not API.SHARED_CACHE.expired(key=cache_key):
+            return API.SHARED_CACHE.get(cache_key)
         else:
             response: requests.api = requests.request(method=method, url=url, **kwargs)
 
             if self.use_cache and not ignore_cache:
-                API.SHARED_CACHE[cache_key] = response.json()
-                API.SHARED_CACHE[cache_key]['cache_expiration'] = datetime.now() + self.cache_duration
+                API.SHARED_CACHE.set(key=cache_key, value=response.json(), duration=self.cache_duration)
 
             return response.json()
 
