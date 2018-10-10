@@ -31,8 +31,5 @@ class User:
     def videos(self, **kwargs) -> 'helix.Videos':
         return helix.Videos(api=self._api, user_id=self.id, **kwargs)
 
-    def save(self):
-        pass
-
-    def reload(self):
-        pass
+    def stream(self) -> 'helix.Stream':
+        return helix.Streams(api=self._api, user_id=self.id)[0]

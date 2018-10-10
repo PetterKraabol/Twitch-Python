@@ -1,5 +1,8 @@
 from typing import List
 
+import twitch.helix as helix
+from twitch.api import API
+
 
 class Commenter:
 
@@ -101,7 +104,8 @@ class Message:
 
 class Comment:
 
-    def __init__(self, data: dict):
+    def __init__(self, api: API, data: dict):
+        self._api: API = api
         self.data: dict = data
 
         self._id: str = None
@@ -127,3 +131,6 @@ class Comment:
                 self.__dict__[key] = Message(data=value)
             else:
                 self.__dict__[key] = value
+
+    def user(self) -> 'helix.User':
+        return helix.Helix(client_id=self._api.client_id).user(self.commenter._id)

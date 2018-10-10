@@ -15,51 +15,61 @@ Twitch Python provides API data to [PetterKraabol/Twitch-Chat-Downloader](https:
 ### Usage
 
 ```python
+# Twitch API
+
 import twitch
 
-# Twitch Helix API
 helix = twitch.Helix('client-id')
+```
 
+```python
+# Users
 
-# Multiple users by name and id
 for user in helix.users('sodapoppin', 'reckful', 24250859):
     print(user.display_name)
 
-# Single user
+
 print(helix.user('zarlach').display_name)
+```
 
-
+```python
 # Videos
+
 for video in helix.videos([318017128, 317650435]):
     print(video.title)
 
-# Single video
+
 print(helix.video(318017128).title)
+```
 
+```python
+# Video Comments
 
-# Video comments
 for comment in helix.video(318017128).comments():
     print(comment.commenter.display_name)
 
 
-# Comments from multiple videos
 for video, comments in helix.videos([318017128, 317650435]).comments():
     for comment in comments:
         print(comment.commenter.display_name, comment.message.body)
 
 
-# Comments from multiple videos from a user
 for video, comments in helix.user('sodapoppin').videos().comments():
         for comment in comments:
             print(comment.commenter.display_name, comment.message.body)
 
 
-# Comments from first 5 videos of multiple users
 for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
         for video, comments in videos.comments():
             for comment in comments:
                 print(comment.commenter.display_name, comment.message.body)
+```
 
+```python
+# Twitch Chat
+
+twitch.Chat(channel='#sodapoppin', nickname='zarlach', oauth='oauth:xxxxxx').subscribe(
+        lambda message: print(message.channel, message.user().display_name, message.text))
 ```
 
 ### Features
@@ -70,4 +80,4 @@ for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
 
 ---
 
-[Check out Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader)
+[Documentation](https://github.com/PetterKraabol/Twitch-Python/wiki) • [Twitch API](https://dev.twitch.tv/docs/) • [Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader)

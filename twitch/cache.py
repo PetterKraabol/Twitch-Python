@@ -13,7 +13,7 @@ class Cache:
         return self._store[key] if self.has(key) and not self.expired(key) else None
 
     def set(self, key: str, value: dict, duration: timedelta = None) -> datetime:
-        expiration: datetime = datetime.now() + duration or self._duration
+        expiration: datetime = datetime.now() + (duration or self._duration)
         self._store[key] = {**value, **{f'{Cache.EXPIRATION_FIELD}': expiration}}
         return expiration
 
@@ -21,7 +21,7 @@ class Cache:
         return key in self._store
 
     def expired(self, key: str) -> bool:
-        return self.has(key) and self._store[key][Cache.EXPIRATION_FIELD] > datetime.now()
+        return not self.has(key) or self._store[key][Cache.EXPIRATION_FIELD] > datetime.now()
 
     def flush(self) -> None:
         self._store = {}

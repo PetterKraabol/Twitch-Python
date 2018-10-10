@@ -35,3 +35,9 @@ class Helix:
         if video_id:
             kwargs['id'] = video_id
         return helix.Videos(self.api(), video_ids=None, **kwargs)[0]
+
+    def streams(self, **kwargs) -> 'helix.Streams':
+        return helix.Streams(self.api(), **kwargs)
+
+    def stream(self, **kwargs) -> 'helix.Stream':
+        return self.streams(**kwargs)[0]

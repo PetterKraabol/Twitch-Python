@@ -21,7 +21,7 @@ class Comments(Resource[dict]):
         while '_next' in fragment:
             fragment = self.fragment(fragment['_next'])
             for comment in fragment['comments']:
-                yield v5.Comment(data=comment)
+                yield v5.Comment(api=self._api, data=comment)
 
     def __getitem__(self, item: int) -> 'v5.Comment':
         for index, value in enumerate(self):

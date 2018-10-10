@@ -5,7 +5,7 @@ from twitch.api import API
 from twitch.resource import Resource
 
 
-class Users(Resource['User']):
+class Users(Resource[helix.User]):
 
     def __init__(self, api: API, *args):
         super().__init__(api=api, path='users')
@@ -30,3 +30,7 @@ class Users(Resource['User']):
     def videos(self, **kwargs) -> Generator[Tuple['helix.User', 'helix.Videos'], None, None]:
         for user in self:
             yield user, user.videos(**kwargs)
+
+    def streams(self) -> Generator[Tuple['helix.User', 'helix.Stream'], None, None]:
+        for user in self:
+            yield user, user.stream()

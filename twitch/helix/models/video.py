@@ -6,6 +6,7 @@ from twitch.api import API
 class Video:
 
     def __init__(self, data: dict = None, api: API = None):
+        # Meta
         self._api: API = api
         self.data: dict = data
 
@@ -24,6 +25,7 @@ class Video:
         self.type: str = None
         self.duration: str = None
 
+        # Fill response fields
         for key, value in data.items():
             self.__dict__[key] = value
 

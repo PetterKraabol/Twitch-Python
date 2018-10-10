@@ -37,7 +37,7 @@ class API:
         url: str = self._url(path=path)
         cache_key: str = f'{method}:{path}'
 
-        if self.use_cache and not ignore_cache and not API.SHARED_CACHE.expired(key=cache_key):
+        if self.use_cache and not ignore_cache and API.SHARED_CACHE.has(cache_key) and not API.SHARED_CACHE.expired(cache_key):
             return API.SHARED_CACHE.get(cache_key)
         else:
             response: requests.api = requests.request(method=method, url=url, **kwargs)
