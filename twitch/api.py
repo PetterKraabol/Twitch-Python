@@ -45,7 +45,6 @@ class API:
 
             if self.use_cache and not ignore_cache:
                 API.SHARED_CACHE.set(key=cache_key, value=response.json(), duration=self.cache_duration)
-
             return response.json()
 
     def get(self, path: str, params: Dict[str, Any] = None, headers: Dict[str, Any] = None, ignore_cache: bool = False,

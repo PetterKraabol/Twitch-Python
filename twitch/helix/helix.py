@@ -15,7 +15,6 @@ class Helix:
         self.use_cache: bool = use_cache
         self.cache_duration: timedelta = cache_duration
         self.rate_limit: int = rate_limit
-        self.scope: List[str] = []
 
     def api(self) -> API:
         return API(Helix.BASE_URL, self.client_id, use_cache=self.use_cache, rate_limit=self.rate_limit)

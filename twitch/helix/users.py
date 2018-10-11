@@ -25,14 +25,14 @@ class Users(Resource[helix.User]):
         ]
 
         # Custom user caching
-        if api.use_cache:
+        if self._api.use_cache:
             cache_hits: Dict[str, list] = {'id': [], 'login': []}
             for key, users in tuple(params.items()):
                 for user in users:
                     cache_key: str = f'helix.users.{key}.{user}'
                     cache_data: dict = API.SHARED_CACHE.get(cache_key)
                     if cache_data:
-                        self._data.append(helix.User(api=api, data=cache_data))
+                        self._data.append(helix.User(api=self._api, data=cache_data))
                         cache_hits[key].append(user)
 
             # Remove cached users from params
@@ -42,14 +42,14 @@ class Users(Resource[helix.User]):
 
         # Fetch non-cached users from API
         if len(params['id'] + params['login']):
-            for data in api.get(self._path, params=params, ignore_cache=True)['data']:
+            for data in self._api.get(self._path, params=params, ignore_cache=True)['data']:
 
-                # Create and append user
-                user = helix.User(api=api, data=data)
+                # Create and append user)
+                user = helix.User(api=self._api, data=data)
                 self._data.append(user)
 
                 # Save to cache
-                if api.use_cache:
+                if self._api.use_cache:
                     API.SHARED_CACHE.set(f'helix.users.login.{user.login}', data)
                     API.SHARED_CACHE.set(f'helix.users.id.{user.id}', data)
 
