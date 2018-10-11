@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Dict
+from typing import Dict, Any
 
 import requests
 
@@ -17,7 +17,7 @@ class API:
         self.base_url: str = base_url
         self.rate_limit: int = rate_limit
         self.client_id: str = client_id
-        self.use_cache: str = use_cache
+        self.use_cache: bool = use_cache
         self.cache_duration: timedelta = cache_duration
 
     def _headers(self, custom: Dict[str, str] = None) -> Dict[str, str]:
@@ -35,19 +35,20 @@ class API:
 
     def request(self, method, path: str = '', ignore_cache: bool = False, **kwargs) -> dict:
         url: str = self._url(path=path)
-        cache_key: str = f'{method}:{path}'
+        request = requests.Request(method, url, **kwargs).prepare()
+        cache_key: str = f'{method}:{request.url}'
 
-        if self.use_cache and not ignore_cache and API.SHARED_CACHE.has(cache_key) and not API.SHARED_CACHE.expired(cache_key):
+        if self.use_cache and not ignore_cache and API.SHARED_CACHE.get(cache_key):
             return API.SHARED_CACHE.get(cache_key)
         else:
-            response: requests.api = requests.request(method=method, url=url, **kwargs)
+            response: requests.Response = requests.Session().send(request)
 
             if self.use_cache and not ignore_cache:
                 API.SHARED_CACHE.set(key=cache_key, value=response.json(), duration=self.cache_duration)
 
             return response.json()
 
-    def get(self, path: str, params: Dict[str, str] = None, headers: Dict[str, str] = None, ignore_cache: bool = False,
+    def get(self, path: str, params: Dict[str, Any] = None, headers: Dict[str, Any] = None, ignore_cache: bool = False,
             **kwargs) -> dict:
         return self.request('GET', path, ignore_cache, params=params, headers=self._headers(headers), **kwargs)
 

@@ -7,6 +7,6 @@ from twitch.helix.models.user import User
 from twitch.helix.models.video import Video
 
 # Resources
+from twitch.helix.streams import Streams
 from twitch.helix.users import Users
 from twitch.helix.videos import Videos
-from twitch.helix.streams import Streams

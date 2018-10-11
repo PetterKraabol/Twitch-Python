@@ -108,7 +108,7 @@ class Comment:
         self._api: API = api
         self.data: dict = data
 
-        self._id: str = None
+        self.id: str = None
         self.created_at: str = None
         self.updated_at: str = None
         self.channel_id: str = None
@@ -125,6 +125,8 @@ class Comment:
             if key not in self.__dict__:
                 return
 
+            if key == '_id':
+                self.__dict__['id'] = value
             if key == 'commenter':
                 self.__dict__[key] = Commenter(data=value)
             elif key == 'message':

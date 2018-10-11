@@ -29,7 +29,7 @@ class Chat(Subject):
             name = message.split('!', 1)[0][1:]
             message = message.split('PRIVMSG', 1)[1].split(':', 1)[1]
 
-            self.on_next(chat.Message(self.channel, name, message, self.helix))
+            self.on_next(chat.Message(channel=self.channel, sender=name, text=message, helix_api=self.helix))
 
     def __del__(self):
         self.dispose()

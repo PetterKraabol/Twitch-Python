@@ -1,4 +1,4 @@
-from typing import List, Union, Generator, Tuple
+from typing import List, Union, Generator, Tuple, Dict
 
 import twitch.helix as helix
 from twitch.api import API
@@ -15,17 +15,43 @@ class Users(Resource[helix.User]):
         for user in args:
             users += [user] if type(user) in [str, int] else list(user)
 
-        params: dict = dict()
-        params['id'], params['login'] = [list(set(n)) for n in
-                                         [[str(user) for user in users if type(user) == x] for x in [int, str]]]
+        params: Dict[str, list] = dict()
 
-        query: str = '?'
-        for param, user_list in params.items():
-            for user in user_list:
-                query += f'{param}={user}&'
+        # Split user id and login (based on type t)
+        params['id'], params['login'] = [
+            list(set(n)) for n in [
+                [str(user) for user in users if type(user) == t] for t in [int, str]
+            ]
+        ]
 
-        self._data = [helix.User(api=self._api, data=data) for data in
-                      self._api.get(self._path + query.rstrip('&'))['data']]
+        # Custom user caching
+        if api.use_cache:
+            cache_hits: Dict[str, list] = {'id': [], 'login': []}
+            for key, users in tuple(params.items()):
+                for user in users:
+                    cache_key: str = f'helix.users.{key}.{user}'
+                    cache_data: dict = API.SHARED_CACHE.get(cache_key)
+                    if cache_data:
+                        self._data.append(helix.User(api=api, data=cache_data))
+                        cache_hits[key].append(user)
+
+            # Remove cached users from params
+            params['id'], params['login'] = [
+                [n for n in params[key] if n not in cache_hits[key]] for key in ['id', 'login']
+            ]
+
+        # Fetch non-cached users from API
+        if len(params['id'] + params['login']):
+            for data in api.get(self._path, params=params, ignore_cache=True)['data']:
+
+                # Create and append user
+                user = helix.User(api=api, data=data)
+                self._data.append(user)
+
+                # Save to cache
+                if api.use_cache:
+                    API.SHARED_CACHE.set(f'helix.users.login.{user.login}', data)
+                    API.SHARED_CACHE.set(f'helix.users.id.{user.id}', data)
 
     def videos(self, **kwargs) -> Generator[Tuple['helix.User', 'helix.Videos'], None, None]:
         for user in self:

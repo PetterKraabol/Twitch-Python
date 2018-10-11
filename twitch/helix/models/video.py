@@ -30,13 +30,12 @@ class Video:
             self.__dict__[key] = value
 
     def comments(self) -> 'v5.Comments':
-        return v5.V5(client_id=self._api.client_id).comments(self.id)
+        return v5.V5(client_id=self._api.client_id,
+                     use_cache=self._api.use_cache,
+                     cache_duration=self._api.cache_duration).comments(self.id)
 
     def user(self) -> 'helix.Users':
         return helix.Users(self._api, self.user_id)
-
-    def __repr__(self) -> str:
-        return self.id
 
     def __str__(self):
         return self.title

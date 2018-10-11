@@ -6,11 +6,11 @@ import twitch.helix as helix
 
 class Message:
 
-    def __init__(self, channel: str, name: str, message: str, helix: twitch.Helix = None):
+    def __init__(self, channel: str, sender: str, text: str, helix_api: twitch.Helix = None):
         self.channel: str = channel
-        self.sender: str = name
-        self.text: str = message
-        self.helix = helix
+        self.sender: str = sender
+        self.text: str = text
+        self.helix = helix_api
 
-    def user(self) -> Optional[helix.User]:
+    def user(self) -> Optional['helix.User']:
         return self.helix.user(self.sender) if self.helix else None

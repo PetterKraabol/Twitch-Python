@@ -29,3 +29,6 @@ class Stream:
 
     def user(self) -> 'helix.User':
         return helix.Users(self._api, self.user_id)[0]
+
+    def __str__(self):
+        return self.title
