@@ -1,12 +1,12 @@
 # Helix
-from twitch.helix.helix import Helix
+from .helix import Helix
 
 # Models
-from twitch.helix.models.stream import Stream
-from twitch.helix.models.user import User
-from twitch.helix.models.video import Video
+from .models import Stream, User, Video
 
 # Resources
-from twitch.helix.streams import Streams
-from twitch.helix.users import Users
-from twitch.helix.videos import Videos
+from .streams import Streams
+from .users import Users
+from .videos import Videos
+
+__all__ = [Helix, Stream, User, Video, Streams, Users, Videos]

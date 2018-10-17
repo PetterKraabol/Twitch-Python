@@ -122,7 +122,7 @@ class Comment:
         self.more_replies: bool = None
 
         for key, value in data.items():
-            if key not in self.__dict__:
+            if key not in list(self.__dict__.keys()) + ['_id']:
                 return
 
             if key == '_id':
@@ -135,4 +135,4 @@ class Comment:
                 self.__dict__[key] = value
 
     def user(self) -> 'helix.User':
-        return helix.Helix(client_id=self._api.client_id).user(self.commenter._id)
+        return helix.Helix(client_id=self._api.client_id).user(self.commenter.id)

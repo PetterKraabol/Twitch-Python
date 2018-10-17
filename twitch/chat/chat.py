@@ -6,9 +6,9 @@ import twitch.chat as chat
 
 class Chat(Subject):
 
-    def __init__(self, channel: str, nickname: str, oauth: str, helix: twitch.Helix = None):
+    def __init__(self, channel: str, nickname: str, oauth: str, helix: 'twitch.Helix' = None):
         super().__init__()
-        self.helix: twitch.Helix = helix
+        self.helix: 'twitch.Helix' = helix
 
         self.irc = chat.IRC(nickname, password=oauth)
         self.irc.incoming.subscribe(self._message_handler)

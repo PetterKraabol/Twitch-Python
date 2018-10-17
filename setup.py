@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+from os import path
+
 from setuptools import setup, find_packages
 
-with open('readme.md') as readme_file:
-    readme = readme_file.read()
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
+    readme = f.read()
 
 requirements = []
 
@@ -34,6 +37,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/PetterKraabol/Twitch-Python',
-    version='0.0.4',
+    version='0.0.5',
     zip_safe=True,
 )

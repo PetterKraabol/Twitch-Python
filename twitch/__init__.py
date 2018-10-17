@@ -1,4 +1,8 @@
-name = "twitch"
+from .chat import Chat
 from .helix import Helix
 from .v5 import V5
-from .chat import Chat
+
+
+name = "twitch"
+
+__all__ = [Helix, V5, Chat]
