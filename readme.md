@@ -9,7 +9,7 @@ Twitch Python provides API data to [PetterKraabol/Twitch-Chat-Downloader](https:
 
 ### Requirements
 
-* [Python 3.6 or newer](https://www.python.org/downloads/)
+* [Python 3.7 or newer](https://www.python.org/downloads/)
 * [A Twitch client ID](https://glass.twitch.tv/console/apps)
 
 ### Usage
