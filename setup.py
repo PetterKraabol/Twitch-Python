@@ -1,18 +1,19 @@
 #!/usr/bin/env python
 
-from os import path
+import os
 
+from pipenv.project import Project
+from pipenv.utils import convert_deps_to_pip
 from setuptools import setup, find_packages
 
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
     readme = f.read()
 
-requirements = []
-
-setup_requirements = []  # ['pytest-runner', ]
-
-test_requirements = []  # ['pytest', ]
+pipfile = Project(chdir=False).parsed_pipfile
+requirements = convert_deps_to_pip(pipfile['packages'], r=False)
+test_requirements = convert_deps_to_pip(pipfile['dev-packages'], r=False)
+setup_requirements = ['pipenv', 'setuptools']
 
 setup(
     author='Petter Kraabøl',
@@ -33,10 +34,11 @@ setup(
     keywords='Twitch API',
     name='twitch-python',
     packages=find_packages(),
+    python_requires=">=3.7",
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/PetterKraabol/Twitch-Python',
-    version='0.0.5',
+    version='0.0.6',
     zip_safe=True,
 )
