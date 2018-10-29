@@ -1,3 +1,4 @@
+import logging
 import socket
 import threading
 from typing import List
@@ -25,12 +26,24 @@ class IRC(threading.Thread):
 
         while self.active:
             try:
-                self.incoming.on_next(self._read_line())
+                data = self._read_line()
+                text = data.decode("UTF-8").strip('\n\r')
+
+                if text.find('PING') >= 0:
+                    self.send_raw('PONG ' + text.split()[1])
+
+                if text.find('Login authentication failed') >= 0:
+                    logging.fatal('IRC authentication error:', data)
+
+                # Publish data to subscribers
+                self.incoming.on_next(data)
+
             except IOError:
                 break
 
     def send_raw(self, message: str) -> None:
-        self.socket.send((message.lstrip('\n') + '\n').encode('utf-8'))
+        data = (message.lstrip('\n') + '\n').encode('utf-8')
+        self.socket.send(data)
 
     def send_message(self, message: str) -> None:
         self.send_raw(f'MESSAGE {message}')
@@ -43,10 +56,8 @@ class IRC(threading.Thread):
         self.send_raw(f'NICK {self.nickname}')
 
     def join_channel(self, channel: str):
-        self.send_raw(f'JOIN {channel}')
-
-    def ping(self):
-        self.send_raw('PONG')
+        channel = channel.lstrip('#')
+        self.send_raw(f'JOIN #{channel}')
 
     def _read_line(self) -> bytes:
         data: bytes = b''

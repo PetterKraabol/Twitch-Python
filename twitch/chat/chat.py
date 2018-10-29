@@ -14,22 +14,22 @@ class Chat(Subject):
         self.irc.incoming.subscribe(self._message_handler)
         self.irc.start()
 
-        self.channel = channel
-        self.irc.incoming.subscribe()
+        self.channel = channel.lstrip('#')
         self.joined: bool = False
 
     def _message_handler(self, data: bytes) -> None:
+        # First messages are server connection messages,
+        # which should be handled by joining the chat room.
         if not self.joined:
             self.irc.join_channel(self.channel)
             self.joined = True
 
-        message = data.decode("UTF-8").strip('\n\r')
+        text = data.decode("UTF-8").strip('\n\r')
 
-        if message.find('PRIVMSG') >= 0:
-            name = message.split('!', 1)[0][1:]
-            message = message.split('PRIVMSG', 1)[1].split(':', 1)[1]
-
-            self.on_next(chat.Message(channel=self.channel, sender=name, text=message, helix_api=self.helix))
+        if text.find('PRIVMSG') >= 0:
+            sender = text.split('!', 1)[0][1:]
+            message = text.split('PRIVMSG', 1)[1].split(':', 1)[1]
+            self.on_next(chat.Message(channel=self.channel, sender=sender, text=message, helix_api=self.helix))
 
     def __del__(self):
         self.dispose()
