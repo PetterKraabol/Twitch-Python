@@ -45,19 +45,31 @@ class IRC(threading.Thread):
         data = (message.lstrip('\n') + '\n').encode('utf-8')
         self.socket.send(data)
 
-    def send_message(self, message: str) -> None:
-        self.send_raw(f'MESSAGE {message}')
+    def send_message(self, message: str, channel: str) -> None:
+        channel = channel.lstrip('#')
+        self.send_raw(f'PRIVMSG #{channel} :{message}')
 
-    def connect(self):
+    def connect(self) -> None:
         self.socket.connect((self.address, self.port))
 
-    def authenticate(self):
+    def authenticate(self) -> None:
         self.send_raw(f'PASS {self.password}')
         self.send_raw(f'NICK {self.nickname}')
 
-    def join_channel(self, channel: str):
+    def join_channel(self, channel: str) -> None:
         channel = channel.lstrip('#')
+        self.channels.append(channel)
         self.send_raw(f'JOIN #{channel}')
+
+    def leave_channel(self, channel: str) -> None:
+        channel = channel.lstrip('#')
+        self.channels.remove(channel)
+        self.send_raw(f'PART #{channel}')
+
+    def leave_channels(self, channels: List[str]) -> None:
+        channels = [channel.lstrip('#') for channel in channels]
+        [self.channels.remove(channel) for channel in channels]
+        self.send_raw('PART #' + '#'.join(channels))
 
     def _read_line(self) -> bytes:
         data: bytes = b''

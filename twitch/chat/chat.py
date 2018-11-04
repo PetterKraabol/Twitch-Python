@@ -1,3 +1,5 @@
+import time
+
 from rx.subjects import Subject
 
 import twitch
@@ -7,6 +9,10 @@ import twitch.chat as chat
 class Chat(Subject):
 
     def __init__(self, channel: str, nickname: str, oauth: str, helix: 'twitch.Helix' = None):
+        """
+
+        :rtype:
+        """
         super().__init__()
         self.helix: 'twitch.Helix' = helix
 
@@ -29,7 +35,13 @@ class Chat(Subject):
         if text.find('PRIVMSG') >= 0:
             sender = text.split('!', 1)[0][1:]
             message = text.split('PRIVMSG', 1)[1].split(':', 1)[1]
-            self.on_next(chat.Message(channel=self.channel, sender=sender, text=message, helix_api=self.helix))
+            self.on_next(
+                chat.Message(channel=self.channel, sender=sender, text=message, helix_api=self.helix, chat=self))
+
+    def send(self, message: str) -> None:
+        while not self.joined:
+            time.sleep(0.01)
+        self.irc.send_message(message=message, channel=self.channel)
 
     def __del__(self):
         self.dispose()
