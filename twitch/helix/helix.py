@@ -40,3 +40,15 @@ class Helix:
 
     def stream(self, **kwargs) -> 'helix.Stream':
         return self.streams(**kwargs)[0]
+
+    def games(self, **kwargs) -> 'helix.Games':
+        return helix.Games(self.api(), **kwargs)
+
+    def game(self, **kwargs) -> 'helix.Game':
+        return self.games(**kwargs)[0]
+
+    def top_games(self, **kwargs) -> List['helix.Game']:
+        return helix.Games(self.api()).top(**kwargs)
+
+    def top_game(self) -> 'helix.Game':
+        return self.top_games()[0]
