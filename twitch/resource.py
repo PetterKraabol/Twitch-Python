@@ -1,4 +1,4 @@
-from typing import TypeVar, Generic, Generator, List
+from typing import TypeVar, Generic, Generator, List, Any
 
 from twitch.api import API
 
@@ -11,6 +11,8 @@ class Resource(Generic[T]):
         self._path: str = path
         self._api: API = api
         self._data: List[T] = data or []
+        self._cursor: str = None
+        self._kwargs: Any = None
 
     def __iter__(self) -> Generator[T, None, None]:
         for entry in self._data:
