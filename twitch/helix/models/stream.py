@@ -28,7 +28,7 @@ class Stream:
             self.__dict__[key] = value
 
     def user(self) -> 'helix.User':
-        return helix.Users(self._api, self.user_id)[0]
+        return helix.Users(self._api, int(self.user_id))[0]
 
     def __str__(self):
         return self.title

@@ -1,3 +1,4 @@
+import twitch.helix as helix
 from twitch.api import API
 
 
@@ -19,3 +20,6 @@ class Game:
 
     def __str__(self):
         return self.name
+
+    def videos(self, **kwargs) -> 'helix.Videos':
+        return helix.Videos(self._api, game_id=self.id, **kwargs)

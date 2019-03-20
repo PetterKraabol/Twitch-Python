@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import List, Union
+from typing import List, Union, Optional
 
 import twitch.helix as helix
 from twitch.api import API
@@ -9,11 +9,21 @@ class Helix:
     BASE_URL: str = 'https://api.twitch.tv/helix/'
 
     def __init__(self, client_id: str, client_secret: str = None, use_cache: bool = False,
-                 cache_duration: timedelta = timedelta(minutes=30), rate_limit: int = 30):
+                 cache_duration: Optional[timedelta] = None, rate_limit: int = 30):
+        """
+        Helix API (New Twitch API)
+        https://dev.twitch.tv/docs/api/
+
+        :param client_id: Twitch client ID
+        :param client_secret: Twitch client secret
+        :param use_cache: Cache API requests (recommended)
+        :param cache_duration: Cache duration
+        :param rate_limit: API rate limit
+        """
         self.client_id: str = client_id
         self.client_secret: str = client_secret
         self.use_cache: bool = use_cache
-        self.cache_duration: timedelta = cache_duration
+        self.cache_duration: Optional[timedelta] = cache_duration
         self.rate_limit: int = rate_limit
 
     def api(self) -> API:
@@ -25,9 +35,9 @@ class Helix:
     def user(self, user: Union[str, int]) -> 'helix.User':
         return self.users(user)[0]
 
-    def videos(self, video_ids: Union[str, int, List[Union[str, int]]], **kwargs) -> 'helix.Videos':
-        if type(video_ids) != list:
-            video_ids = [video_ids]
+    def videos(self, video_ids: Union[str, int, List[Union[str, int]]] = None, **kwargs) -> 'helix.Videos':
+        if video_ids and type(video_ids) != list:
+            video_ids = [int(video_ids)]
         return helix.Videos(self.api(), video_ids=video_ids, **kwargs)
 
     def video(self, video_id: Union[str, int] = None, **kwargs) -> 'helix.Video':

@@ -34,8 +34,8 @@ class Video:
                      use_cache=self._api.use_cache,
                      cache_duration=self._api.cache_duration).comments(self.id)
 
-    def user(self) -> 'helix.Users':
-        return helix.Users(self._api, self.user_id)
+    def user(self) -> 'helix.User':
+        return helix.Users(self._api, int(self.user_id))[0]
 
     def __str__(self):
         return self.title

@@ -15,4 +15,5 @@ class Games(Resource[helix.Game]):
                           self._api.get(self._path, params=kwargs)['data']]
 
     def top(self, **kwargs) -> List['helix.Game']:
-        return [helix.Game(api=self._api, data=game) for game in self._api.get('games/top', params=kwargs)['data']]
+        return [helix.Game(api=self._api, data=game) for game in
+                self._api.get(f'{self._path}/top', params=kwargs)['data']]

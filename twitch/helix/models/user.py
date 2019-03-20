@@ -29,7 +29,7 @@ class User:
         return self.login
 
     def videos(self, **kwargs) -> 'helix.Videos':
-        return helix.Videos(api=self._api, user_id=self.id, **kwargs)
+        return helix.Videos(api=self._api, user_id=int(self.id), **kwargs)
 
     def stream(self) -> 'helix.Stream':
-        return helix.Streams(api=self._api, user_id=self.id)[0]
+        return helix.Streams(api=self._api, user_id=int(self.id))[0]

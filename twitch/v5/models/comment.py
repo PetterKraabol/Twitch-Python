@@ -135,4 +135,4 @@ class Comment:
                 self.__dict__[key] = value
 
     def user(self) -> 'helix.User':
-        return helix.Helix(client_id=self._api.client_id).user(self.commenter.id)
+        return helix.Helix(client_id=self._api.client_id).user(int(self.commenter._id))
