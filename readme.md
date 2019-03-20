@@ -3,14 +3,14 @@
 [![Discord](https://user-images.githubusercontent.com/7288322/34471967-1df7808a-efbb-11e7-9088-ed0b04151291.png)](https://discord.gg/wZJFeXC)
 
 
-`pip install twitch-python`
+`pip install --user twitch-python`
 
-Twitch Python provides API data to [PetterKraabol/Twitch-Chat-Downloader](https://github.com/PetterKraabol/Twitch-Chat-Downloader).
+An object-oriented approach to accessing the Twitch API and live chat with relationships and smart caching.
 
 ### Requirements
 
 * [Python 3.7 or newer](https://www.python.org/downloads/)
-* [A Twitch client ID](https://glass.twitch.tv/console/apps)
+* [A Twitch client ID](https://dev.twitch.tv/console/apps)
 
 ### Usage
 
@@ -43,7 +43,7 @@ print(helix.video(318017128).title)
 ```
 
 ```python
-# Video Comments
+# Video Comments (VOD chat)
 
 for comment in helix.video(318017128).comments():
     print(comment.commenter.display_name)
@@ -73,10 +73,10 @@ twitch.Chat(channel='#sodapoppin', nickname='zarlach', oauth='oauth:xxxxxx').sub
 ```
 
 ### Features
-- Object oriented
+- Object-oriented relationships
+- Smart caching
 - New Twitch API (Helix)
 - VOD chat from Twitch API v5
-- Optional cache
 
 ---
 
