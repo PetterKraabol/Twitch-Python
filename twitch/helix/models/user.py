@@ -1,29 +1,27 @@
+from typing import Optional
+
 import twitch.helix as helix
 from twitch.api import API
+from twitch.helix.models.model import Model
 
 
-class User:
+class User(Model):
 
-    def __init__(self, data: dict = None, api: API = None):
-        # Meta
-        self._api: API = api
-        self.data: dict = data
+    def __init__(self, api: API, data: dict):
+        super().__init__(api, data)
 
-        # Response fields
-        self.broadcaster_type: str = None
-        self.description: str = None
-        self.display_name: str = None
-        self.email: str = None
         self.id: str = None
         self.login: str = None
-        self.offline_image_url: str = None
-        self.profile_image_url: str = None
+        self.display_name: str = None
         self.type: str = None
+        self.broadcaster_type: str = None
+        self.description: str = None
+        self.profile_image_url: str = None
+        self.offline_image_url: str = None
         self.view_count: int = None
+        self.email: Optional[str] = None
 
-        # Fill response fields
-        for key, value in data.items():
-            self.__dict__[key] = value
+        self._populate()
 
     def __str__(self):
         return self.login
@@ -31,5 +29,14 @@ class User:
     def videos(self, **kwargs) -> 'helix.Videos':
         return helix.Videos(api=self._api, user_id=int(self.id), **kwargs)
 
+    @property
     def stream(self) -> 'helix.Stream':
         return helix.Streams(api=self._api, user_id=int(self.id))[0]
+
+    def following(self, **kwargs) -> 'helix.Follows':
+        kwargs['from_id'] = self.id
+        return helix.Follows(api=self._api, follow_type='following', **kwargs)
+
+    def followers(self, **kwargs) -> 'helix.Follows':
+        kwargs['to_id'] = self.id
+        return helix.Follows(api=self._api, follow_type='followers', **kwargs)

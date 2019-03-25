@@ -1,22 +1,18 @@
 import twitch.helix as helix
 from twitch.api import API
+from twitch.helix.models.model import Model
 
 
-class Game:
+class Game(Model):
 
     def __init__(self, api: API, data: dict):
-        # Meta
-        self._api: API = api
-        self.data: dict = data
+        super().__init__(api, data)
 
-        # Response fields
         self.id: str = None
         self.name: str = None
         self.box_art_url: str = None
 
-        # Fill response fields
-        for key, value in data.items():
-            self.__dict__[key] = value
+        self._populate()
 
     def __str__(self):
         return self.name

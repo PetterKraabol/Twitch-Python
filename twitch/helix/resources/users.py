@@ -1,8 +1,8 @@
 from typing import List, Union, Generator, Tuple, Dict
 
 import twitch.helix as helix
+from helix.resources.resource import Resource
 from twitch.api import API
-from twitch.resource import Resource
 
 
 class Users(Resource[helix.User]):
@@ -53,10 +53,20 @@ class Users(Resource[helix.User]):
                     API.SHARED_CACHE.set(f'helix.users.login.{user.login}', data)
                     API.SHARED_CACHE.set(f'helix.users.id.{user.id}', data)
 
+    def _can_paginate(self) -> bool:
+        return False
+
+    def _handle_pagination_response(self, response: dict) -> None:
+        pass
+
+    def _pagination_stream_done(self) -> None:
+        pass
+
     def videos(self, **kwargs) -> Generator[Tuple['helix.User', 'helix.Videos'], None, None]:
         for user in self:
             yield user, user.videos(**kwargs)
 
+    @property
     def streams(self) -> Generator[Tuple['helix.User', 'helix.Stream'], None, None]:
         for user in self:
-            yield user, user.stream()
+            yield user, user.stream

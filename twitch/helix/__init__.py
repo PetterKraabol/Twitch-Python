@@ -1,13 +1,13 @@
-# Helix
 from .helix import Helix
 
-# Models
-from .models import Stream, User, Video, Game
+from .models import Stream, User, Video, Game, Follow
+from .resources import Streams, StreamNotFound, Users, Videos, Follows, Games
 
-# Resources
-from .streams import Streams, StreamNotFound
-from .users import Users
-from .videos import Videos
-from .games import Games
-
-__all__ = [Helix, Stream, User, Video, Streams, Users, Videos, StreamNotFound]
+__all__ = [
+    Helix,
+    Stream, StreamNotFound, Streams,
+    Video, Videos,
+    User, Users,
+    Follow, Follows,
+    Game, Games,
+]
