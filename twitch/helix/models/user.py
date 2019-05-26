@@ -1,11 +1,8 @@
 from typing import Dict, Any
 
+import twitch.helix as helix
 from twitch.api import API
-from twitch.helix.resources.follows import Follows
-from twitch.helix.resources.streams import Streams
-from twitch.helix.resources.videos import Videos
 from .model import Model
-from .stream import Stream
 
 
 class User(Model):
@@ -27,17 +24,17 @@ class User(Model):
     def __str__(self):
         return self.login
 
-    def videos(self, **kwargs) -> Videos:
-        return Videos(api=self._api, user_id=int(self.id), **kwargs)
+    def videos(self, **kwargs) -> 'helix.Videos':
+        return helix.Videos(api=self._api, user_id=int(self.id), **kwargs)
 
     @property
-    def stream(self) -> Stream:
-        return Streams(api=self._api, user_id=int(self.id))[0]
+    def stream(self) -> 'helix.Stream':
+        return helix.Streams(api=self._api, user_id=int(self.id))[0]
 
-    def following(self, **kwargs) -> Follows:
+    def following(self, **kwargs) -> 'helix.Follows':
         kwargs['from_id'] = self.id
-        return Follows(api=self._api, follow_type='following', **kwargs)
+        return helix.Follows(api=self._api, follow_type='following', **kwargs)
 
-    def followers(self, **kwargs) -> Follows:
+    def followers(self, **kwargs) -> 'helix.Follows':
         kwargs['to_id'] = self.id
-        return Follows(api=self._api, follow_type='followers', **kwargs)
+        return helix.Follows(api=self._api, follow_type='followers', **kwargs)

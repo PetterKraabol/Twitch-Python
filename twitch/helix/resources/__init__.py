@@ -1,5 +1,6 @@
 from typing import List, Callable
 
+from .clips import Clips
 from .follows import Follows
 from .games import Games
 from .resource import Resource

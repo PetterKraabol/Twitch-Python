@@ -1,8 +1,8 @@
 from typing import List, Callable
 
-from .chat import Chat
-from .helix import Helix
-from .v5 import V5
+from twitch.chat import Chat
+from twitch.helix import Helix
+from twitch.v5 import V5
 
 name: str = "twitch"
 

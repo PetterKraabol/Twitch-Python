@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
+import twitch.helix as helix
 from twitch.api import API
-from twitch.helix.resources.videos import Videos
 from .model import Model
 
 
@@ -17,5 +17,5 @@ class Game(Model):
     def __str__(self):
         return self.name
 
-    def videos(self, **kwargs) -> Videos:
-        return Videos(self._api, game_id=self.id, **kwargs)
+    def videos(self, **kwargs) -> 'helix.Videos':
+        return helix.Videos(self._api, game_id=self.id, **kwargs)

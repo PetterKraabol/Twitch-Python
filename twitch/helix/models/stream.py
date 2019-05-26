@@ -2,7 +2,6 @@ from typing import List, Dict, Any
 
 import twitch.helix as helix
 from twitch.api import API
-from twitch.helix.resources.users import Users
 from .model import Model
 
 
@@ -27,4 +26,4 @@ class Stream(Model):
 
     @property
     def user(self) -> 'helix.User':
-        return Users(self._api, int(self.user_id))[0]
+        return helix.Users(self._api, int(self.user_id))[0]
