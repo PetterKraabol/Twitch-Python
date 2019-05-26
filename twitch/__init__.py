@@ -6,4 +6,8 @@ from .v5 import V5
 
 name: str = "twitch"
 
-__all__: List[Callable] = [Helix, V5, Chat]
+__all__: List[Callable] = [
+    Helix,
+    V5,
+    Chat
+]

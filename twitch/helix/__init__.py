@@ -2,14 +2,14 @@ from typing import List, Callable
 
 # Helix
 from .helix import Helix
+from .models import Stream, User, Video, Game, Follow
+from .resources import Streams, StreamNotFound, Users, Videos, Follows, Games
 
-# Models
-from .models import Stream, User, Video, Game
-
-# Resources
-from .streams import Streams, StreamNotFound
-from .users import Users
-from .videos import Videos
-from .games import Games
-
-__all__: List[Callable] = [Helix, Stream, User, Video, Streams, Users, Videos, StreamNotFound]
+__all__: List[Callable] = [
+    Helix,
+    Stream, StreamNotFound, Streams,
+    Video, Videos,
+    User, Users,
+    Follow, Follows,
+    Game, Games,
+]

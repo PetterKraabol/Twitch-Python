@@ -1,17 +1,15 @@
 from typing import List, Dict, Any
 
-import twitch.helix as helix
 from twitch.api import API
+from twitch.helix.models import Model, User
+from twitch.helix.resources import Users
 
 
-class Stream:
+class Stream(Model):
 
     def __init__(self, api: API, data: Dict[str, Any]):
-        # Meta
-        self._api: API = api
-        self.data: Dict[str, Any] = data
+        super().__init__(api, data)
 
-        # Response fields
         self.id: str = self.data.get('id')
         self.user_id: str = self.data.get('user_id')
         self.game_id: str = self.data.get('game_id')
@@ -23,8 +21,9 @@ class Stream:
         self.language: str = self.data.get('language')
         self.thumbnail_url: str = self.data.get('thumbnail_url')
 
-    def user(self) -> 'helix.User':
-        return helix.Users(self._api, int(self.user_id))[0]
-
     def __str__(self):
         return self.title
+
+    @property
+    def user(self) -> User:
+        return Users(self._api, int(self.user_id))[0]

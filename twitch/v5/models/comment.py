@@ -1,7 +1,8 @@
 from typing import List, Optional, Dict, Any
 
-import twitch.helix as helix
 from twitch.api import API
+from twitch.helix import Helix
+from twitch.helix.models import Model, User
 
 
 class Commenter:
@@ -62,11 +63,10 @@ class Message:
         self.user_color: str = self.data.get('user_color')
 
 
-class Comment:
+class Comment(Model):
 
-    def __init__(self, api: API, data: dict):
-        self._api: API = api
-        self.data: dict = data
+    def __init__(self, api: API, data: Dict[str, Any]):
+        super().__init__(api, data)
 
         self.id: str = self.data.get('_id')
         self.created_at: str = self.data.get('created_at')
@@ -81,5 +81,6 @@ class Comment:
         self.message: Message = Message(self.data.get('message'))
         self.more_replies: bool = self.data.get('more_replies')
 
-    def user(self) -> 'helix.User':
-        return helix.Helix(client_id=self._api.client_id).user(int(self.commenter.id))
+    @property
+    def user(self) -> User:
+        return Helix(client_id=self._api.client_id).user(int(self.commenter.id))

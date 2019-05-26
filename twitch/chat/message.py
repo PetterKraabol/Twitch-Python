@@ -1,7 +1,7 @@
 from typing import Optional
 
-import twitch
-import twitch.helix as helix
+from twitch.helix import User, Helix
+from .chat import Chat
 
 
 class Message:
@@ -10,13 +10,14 @@ class Message:
                  channel: str,
                  sender: str,
                  text: str,
-                 helix_api: Optional['twitch.Helix'] = None,
-                 chat: Optional['twitch.Chat'] = None):
+                 helix_api: Optional[Helix] = None,
+                 chat: Optional[Chat] = None):
         self.channel: str = channel
         self.sender: str = sender
         self.text: str = text
-        self.helix: Optional['twitch.Helix'] = helix_api
-        self.chat: Optional['twitch.Chat'] = chat
+        self.helix: Optional[Helix] = helix_api
+        self.chat: Optional[Chat] = chat
 
-    def user(self) -> Optional['helix.User']:
+    @property
+    def user(self) -> Optional[User]:
         return self.helix.user(self.sender) if self.helix else None

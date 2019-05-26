@@ -1,17 +1,15 @@
 from typing import Dict, Any
 
-import twitch.helix as helix
 from twitch.api import API
+from twitch.helix.models import Model, Stream
+from twitch.helix.resources import Videos, Streams, Follows
 
 
-class User:
+class User(Model):
 
     def __init__(self, api: API, data: Dict[str, Any]):
-        # Meta
-        self._api: API = api
-        self.data: Dict[str, Any] = data
+        super().__init__(api, data)
 
-        # Response fields
         self.broadcaster_type: str = self.data.get('broadcaster_type')
         self.description: str = self.data.get('description')
         self.display_name: str = self.data.get('display_name')
@@ -26,8 +24,17 @@ class User:
     def __str__(self):
         return self.login
 
-    def videos(self, **kwargs) -> 'helix.Videos':
-        return helix.Videos(api=self._api, user_id=int(self.id), **kwargs)
+    def videos(self, **kwargs) -> Videos:
+        return Videos(api=self._api, user_id=int(self.id), **kwargs)
 
-    def stream(self) -> 'helix.Stream':
-        return helix.Streams(api=self._api, user_id=int(self.id))[0]
+    @property
+    def stream(self) -> Stream:
+        return Streams(api=self._api, user_id=int(self.id))[0]
+
+    def following(self, **kwargs) -> Follows:
+        kwargs['from_id'] = self.id
+        return Follows(api=self._api, follow_type='following', **kwargs)
+
+    def followers(self, **kwargs) -> Follows:
+        kwargs['to_id'] = self.id
+        return Follows(api=self._api, follow_type='followers', **kwargs)

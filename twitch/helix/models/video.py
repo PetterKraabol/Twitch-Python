@@ -1,18 +1,17 @@
 from typing import Dict, Any
 
-import twitch.helix as helix
-import twitch.v5 as v5
 from twitch.api import API
+from twitch.helix.models import Model, User
+from twitch.helix.resources import Users
+from twitch.v5 import V5
+from twitch.v5.resources import Comments
 
 
-class Video:
+class Video(Model):
 
     def __init__(self, api: API, data: Dict[str, Any]):
-        # Meta
-        self._api: API = api
-        self.data: Dict[str, Any] = data
+        super().__init__(api, data)
 
-        # Response fields
         self.id: str = self.data.get('id')
         self.user_id: str = self.data.get('user_id')
         self.title: str = self.data.get('title')
@@ -27,13 +26,15 @@ class Video:
         self.type: str = self.data.get('type')
         self.duration: str = self.data.get('duration')
 
-    def comments(self) -> 'v5.Comments':
-        return v5.V5(client_id=self._api.client_id,
-                     use_cache=self._api.use_cache,
-                     cache_duration=self._api.cache_duration).comments(self.id)
-
-    def user(self) -> 'helix.User':
-        return helix.Users(self._api, int(self.user_id))[0]
-
     def __str__(self):
         return self.title
+
+    @property
+    def comments(self) -> Comments:
+        return V5(client_id=self._api.client_id,
+                  use_cache=self._api.use_cache,
+                  cache_duration=self._api.cache_duration).comments(self.id)
+
+    @property
+    def user(self) -> User:
+        return Users(self._api, int(self.user_id))[0]
