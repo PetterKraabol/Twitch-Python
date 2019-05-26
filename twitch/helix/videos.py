@@ -29,7 +29,7 @@ class Videos(Resource[helix.Video]):
         # Create list of video ids by combining video_ids and kwargs['id']
 
         # Convert singular string to list
-        if 'id' in self._kwargs and type(self._kwargs['id']) == str:
+        if self._kwargs.get('id') and type(self._kwargs['id']) == str:
             self._kwargs['id'] = [self._kwargs['id']]
 
         self._kwargs['id'] = list(self._kwargs['id']) if 'id' in self._kwargs.keys() else []

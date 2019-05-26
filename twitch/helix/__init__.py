@@ -1,3 +1,5 @@
+from typing import List, Callable
+
 # Helix
 from .helix import Helix
 
@@ -10,4 +12,4 @@ from .users import Users
 from .videos import Videos
 from .games import Games
 
-__all__ = [Helix, Stream, User, Video, Streams, Users, Videos, StreamNotFound]
+__all__: List[Callable] = [Helix, Stream, User, Video, Streams, Users, Videos, StreamNotFound]

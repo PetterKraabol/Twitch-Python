@@ -1,29 +1,27 @@
+from typing import Dict, Any
+
 import twitch.helix as helix
 from twitch.api import API
 
 
 class User:
 
-    def __init__(self, data: dict = None, api: API = None):
+    def __init__(self, api: API, data: Dict[str, Any]):
         # Meta
         self._api: API = api
-        self.data: dict = data
+        self.data: Dict[str, Any] = data
 
         # Response fields
-        self.broadcaster_type: str = None
-        self.description: str = None
-        self.display_name: str = None
-        self.email: str = None
-        self.id: str = None
-        self.login: str = None
-        self.offline_image_url: str = None
-        self.profile_image_url: str = None
-        self.type: str = None
-        self.view_count: int = None
-
-        # Fill response fields
-        for key, value in data.items():
-            self.__dict__[key] = value
+        self.broadcaster_type: str = self.data.get('broadcaster_type')
+        self.description: str = self.data.get('description')
+        self.display_name: str = self.data.get('display_name')
+        self.email: str = self.data.get('email')
+        self.id: str = self.data.get('id')
+        self.login: str = self.data.get('login')
+        self.offline_image_url: str = self.data.get('offline_image_url')
+        self.profile_image_url: str = self.data.get('profile_image_url')
+        self.type: str = self.data.get('type')
+        self.view_count: int = self.data.get('view_count')
 
     def __str__(self):
         return self.login

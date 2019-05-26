@@ -1,5 +1,5 @@
 from datetime import timedelta
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import requests
 
@@ -20,7 +20,7 @@ class API:
         self.use_cache: bool = use_cache
         self.cache_duration: timedelta = cache_duration
 
-    def _headers(self, custom: Dict[str, str] = None) -> Dict[str, str]:
+    def _headers(self, custom: Optional[Dict[str, str]] = None) -> Dict[str, str]:
         default: Dict[str, str] = {
             'Client-ID': self.client_id
         }
@@ -51,7 +51,8 @@ class API:
 
             return response.json()
 
-    def get(self, path: str, params: Dict[str, Any] = None, headers: Dict[str, Any] = None, ignore_cache: bool = False,
+    def get(self, path: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, Any]] = None,
+            ignore_cache: bool = False,
             **kwargs) -> dict:
         return self.request('GET', path, ignore_cache, params=params, headers=self._headers(headers), **kwargs)
 

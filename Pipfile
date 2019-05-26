@@ -8,6 +8,10 @@ requests = "*"
 rx = "*"
 
 [dev-packages]
+httmock = "*"
+httpretty = "*"
+pipenv = "*"
+twine = "*"
 
 [requires]
 python_version = "3.7"

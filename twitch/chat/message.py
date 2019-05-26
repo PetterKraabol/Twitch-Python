@@ -10,13 +10,13 @@ class Message:
                  channel: str,
                  sender: str,
                  text: str,
-                 helix_api: 'twitch.Helix' = None,
-                 chat: 'twitch.Chat' = None):
+                 helix_api: Optional['twitch.Helix'] = None,
+                 chat: Optional['twitch.Chat'] = None):
         self.channel: str = channel
         self.sender: str = sender
         self.text: str = text
-        self.helix: 'twitch.Helix' = helix_api
-        self.chat: 'twitch.Chat' = chat
+        self.helix: Optional['twitch.Helix'] = helix_api
+        self.chat: Optional['twitch.Chat'] = chat
 
     def user(self) -> Optional['helix.User']:
         return self.helix.user(self.sender) if self.helix else None

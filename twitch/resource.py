@@ -1,4 +1,4 @@
-from typing import TypeVar, Generic, Generator, List
+from typing import TypeVar, Generic, Generator, List, Optional
 
 from twitch.api import API
 
@@ -8,11 +8,11 @@ T = TypeVar('T')
 class Resource(Generic[T]):
     FIRST_API_LIMIT: int = 100
 
-    def __init__(self, path: str, api: API, data: List[T] = None):
+    def __init__(self, path: str, api: API, data: Optional[List[T]] = None):
         self._path: str = path
         self._api: API = api
         self._data: List[T] = data or []
-        self._cursor: str = None
+        self._cursor: Optional[str] = None
         self._kwargs: dict = {}
 
     def __iter__(self) -> Generator[T, None, None]:

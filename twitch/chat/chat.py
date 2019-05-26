@@ -1,4 +1,5 @@
 import time
+from typing import Optional
 
 from rx.subjects import Subject
 
@@ -8,13 +9,15 @@ import twitch.chat as chat
 
 class Chat(Subject):
 
-    def __init__(self, channel: str, nickname: str, oauth: str, helix: 'twitch.Helix' = None):
+    def __init__(self, channel: str, nickname: str, oauth: str, helix: Optional['twitch.Helix'] = None):
         """
-
-        :rtype:
+        :param channel: Channel name
+        :param nickname: User nickname
+        :param oauth: Twitch OAuth
+        :param helix: Optional Helix API
         """
         super().__init__()
-        self.helix: 'twitch.Helix' = helix
+        self.helix: Optional['twitch.Helix'] = helix
 
         self.irc = chat.IRC(nickname, password=oauth)
         self.irc.incoming.subscribe(self._message_handler)

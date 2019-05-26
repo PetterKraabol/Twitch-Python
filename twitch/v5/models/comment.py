@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Dict, Any
 
 import twitch.helix as helix
 from twitch.api import API
@@ -6,100 +6,60 @@ from twitch.api import API
 
 class Commenter:
 
-    def __init__(self, data: dict = None):
-        self.data: dict = data
+    def __init__(self, data: Dict[str, Any]):
+        self.data: Dict[str, Any] = data
 
-        self.display_name: str = None
-        self._id: str = None
-        self.name: str = None
-        self.type: str = None
-        self.bio: str = None
-        self.created_at: str = None
-        self.updated_at: str = None
-        self.logo: str = None
-
-        for key, value in data.items():
-            if key not in self.__dict__:
-                return
-
-            self.__dict__[key] = value
+        self.display_name: str = self.data.get('display_name')
+        self.id: str = self.data.get('_id')
+        self.name: str = self.data.get('name')
+        self.type: str = self.data.get('type')
+        self.bio: str = self.data.get('bio')
+        self.created_at: str = self.data.get('created_at')
+        self.updated_at: str = self.data.get('updated_at')
+        self.logo: str = self.data.get('logo')
 
 
 class Emoticon:
 
-    def __init__(self, data: dict = None):
-        self.data: dict = data
+    def __init__(self, data: Dict[str, Any]):
+        self.data: Dict[str, Any] = data
 
-        self._id: str = None
-        self.begin: int = None
-        self.end: int = None
-        self.emoticon_id: str = None
-        self.emoticon_set_id: str = None
-
-        for key, value in data.items():
-            if key not in self.__dict__:
-                return
-
-            self.__dict__[key] = value
+        self.id: str = self.data.get('id')
+        self.begin: int = self.data.get('begin')
+        self.end: int = self.data.get('end')
+        self.emoticon_id: str = self.data.get('emoticon_id')
+        self.emoticon_set_id: str = self.data.get('emoticon_set_id')
 
 
 class Fragment:
 
-    def __init__(self, data: dict = None):
+    def __init__(self, data: Optional[Dict[str, Any]] = None):
         self.data: dict = data
 
-        self.text: str = None
-        self.emoticon: Emoticon = None
-
-        for key, value in data.items():
-            if key not in self.__dict__:
-                return
-
-            if key == 'emoticon':
-                self.__dict__[key] = Emoticon(value)
-            else:
-                self.__dict__[key] = value
+        self.text: Optional[str] = self.data.get('text')
+        self.emoticon: Optional[Emoticon] = Emoticon(self.data.get('emoticon'))
 
 
 class UserBadge:
 
-    def __init__(self, data: dict = None):
-        self.data: dict = data
+    def __init__(self, data: Dict[str, Any]):
+        self.data: Dict[str, Any] = data
 
-        self._id: str = None
-        self.version: str = None
-
-        for key, value in data.items():
-            if key not in self.__dict__:
-                return
-
-            self.__dict__[key] = value
+        self.id: str = self.data.get('_id')
+        self.version: str = self.data.get('version')
 
 
 class Message:
 
-    def __init__(self, data: dict = None):
-        self.data: dict = data
+    def __init__(self, data: Dict[str, Any]):
+        self.data: Dict[str, Any] = data
 
-        self.body: str = None
-        self.emoticons: List[Emoticon] = []
-        self.fragments: List[Fragment] = []
-        self.is_action: bool = None
-        self.user_badges: List[UserBadge] = []
-        self.user_color: str = None
-
-        for key, value in data.items():
-            if key not in self.__dict__:
-                return
-
-            if key == 'emoticons':
-                self.__dict__[key] = [Emoticon(data=data) for data in value]
-            elif key == 'fragments':
-                self.__dict__[key] = [Fragment(data=data) for data in value]
-            elif key == 'user_badges':
-                self.__dict__[key] = [UserBadge(data=data) for data in value]
-            else:
-                self.__dict__[key] = value
+        self.body: str = self.data.get('body')
+        self.emoticons: List[Emoticon] = [Emoticon(data) for data in self.data.get('emoticons', [])]
+        self.fragments: List[Fragment] = [Fragment(data) for data in self.data.get('fragments', [])]
+        self.is_action: bool = self.data.get('is_action')
+        self.user_badges: List[UserBadge] = [UserBadge(data) for data in self.data.get('user_badges', [])]
+        self.user_color: str = self.data.get('user_color')
 
 
 class Comment:
@@ -108,31 +68,18 @@ class Comment:
         self._api: API = api
         self.data: dict = data
 
-        self.id: str = None
-        self.created_at: str = None
-        self.updated_at: str = None
-        self.channel_id: str = None
-        self.content_type: str = None
-        self.content_id: str = None
-        self.content_offset_seconds: float = None
-        self.commenter: Commenter = None
-        self.source: str = None
-        self.state: str = None
-        self.message: Message = None
-        self.more_replies: bool = None
-
-        for key, value in data.items():
-            if key not in list(self.__dict__.keys()) + ['_id']:
-                return
-
-            if key == '_id':
-                self.__dict__['id'] = value
-            if key == 'commenter':
-                self.__dict__[key] = Commenter(data=value)
-            elif key == 'message':
-                self.__dict__[key] = Message(data=value)
-            else:
-                self.__dict__[key] = value
+        self.id: str = self.data.get('_id')
+        self.created_at: str = self.data.get('created_at')
+        self.updated_at: str = self.data.get('updated_at')
+        self.channel_id: str = self.data.get('channel_id')
+        self.content_type: str = self.data.get('content_type')
+        self.content_id: str = self.data.get('content_id')
+        self.content_offset_seconds: float = self.data.get('content_offset_seconds')
+        self.commenter: Commenter = Commenter(self.data.get('commenter'))
+        self.source: str = self.data.get('source')
+        self.state: str = self.data.get('state')
+        self.message: Message = Message(self.data.get('message'))
+        self.more_replies: bool = self.data.get('more_replies')
 
     def user(self) -> 'helix.User':
-        return helix.Helix(client_id=self._api.client_id).user(int(self.commenter._id))
+        return helix.Helix(client_id=self._api.client_id).user(int(self.commenter.id))

@@ -5,7 +5,7 @@ from typing import Dict, Optional
 class Cache:
     EXPIRATION_FIELD: str = "CACHE_EXPIRATION"
 
-    def __init__(self, duration: timedelta = None):
+    def __init__(self, duration: Optional[timedelta] = None):
         self._store: Dict[str, dict] = {}
         self._duration: timedelta = duration or timedelta(minutes=30)
 
@@ -13,7 +13,7 @@ class Cache:
         if self.has(key) and (ignore_expiration or self.expired(key)):
             return self._store[key]['value']
 
-    def set(self, key: str, value: dict, duration: timedelta = None) -> datetime:
+    def set(self, key: str, value: dict, duration: Optional[timedelta] = None) -> datetime:
         expiration: datetime = datetime.now() + (duration or self._duration)
         self._store[key] = {**{'value': value}, **{f'{Cache.EXPIRATION_FIELD}': expiration}}
         return expiration
