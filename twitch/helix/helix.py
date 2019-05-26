@@ -1,9 +1,8 @@
 from datetime import timedelta
 from typing import List, Union, Optional
 
+import twitch.helix as helix
 from twitch.api import API
-from twitch.helix.models import User, Video, Stream, Game
-from twitch.helix.resources import Users, Videos, Streams, Games
 
 
 class Helix:
@@ -37,36 +36,36 @@ class Helix:
 
         self.api = API(Helix.BASE_URL, self.client_id, use_cache=self.use_cache, bearer_token=self.bearer_token)
 
-    def users(self, *args) -> Users:
-        return Users(self.api, *args)
+    def users(self, *args) -> 'helix.Users':
+        return helix.Users(self.api, *args)
 
-    def user(self, user: Union[str, int]) -> User:
+    def user(self, user: Union[str, int]) -> 'helix.User':
         return self.users(user)[0]
 
-    def videos(self, video_ids: Union[str, int, List[Union[str, int]]] = None, **kwargs) -> Videos:
+    def videos(self, video_ids: Union[str, int, List[Union[str, int]]] = None, **kwargs) -> 'helix.Videos':
         if video_ids and type(video_ids) != list:
             video_ids = [int(video_ids)]
-        return Videos(self.api, video_ids=video_ids, **kwargs)
+        return helix.Videos(self.api, video_ids=video_ids, **kwargs)
 
-    def video(self, video_id: Union[str, int] = None, **kwargs) -> Video:
+    def video(self, video_id: Union[str, int] = None, **kwargs) -> 'helix.Video':
         if video_id:
             kwargs['id'] = [video_id]
-        return Videos(self.api, video_ids=None, **kwargs)[0]
+        return helix.Videos(self.api, video_ids=None, **kwargs)[0]
 
-    def streams(self, **kwargs) -> Streams:
-        return Streams(self.api, **kwargs)
+    def streams(self, **kwargs) -> 'helix.Streams':
+        return helix.Streams(self.api, **kwargs)
 
-    def stream(self, **kwargs) -> Stream:
+    def stream(self, **kwargs) -> 'helix.Stream':
         return self.streams(**kwargs)[0]
 
-    def games(self, **kwargs) -> Games:
-        return Games(self.api, **kwargs)
+    def games(self, **kwargs) -> 'helix.Games':
+        return helix.Games(self.api, **kwargs)
 
-    def game(self, **kwargs) -> Game:
+    def game(self, **kwargs) -> 'helix.Game':
         return self.games(**kwargs)[0]
 
-    def top_games(self, **kwargs) -> List[Game]:
-        return Games(self.api).top(**kwargs)
+    def top_games(self, **kwargs) -> List['helix.Game']:
+        return helix.Games(self.api).top(**kwargs)
 
-    def top_game(self) -> Game:
+    def top_game(self) -> 'helix.Game':
         return self.top_games()[0]

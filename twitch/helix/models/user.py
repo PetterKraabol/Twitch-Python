@@ -1,8 +1,11 @@
 from typing import Dict, Any
 
 from twitch.api import API
-from twitch.helix.models import Model, Stream
-from twitch.helix.resources import Videos, Streams, Follows
+from twitch.helix.resources.follows import Follows
+from twitch.helix.resources.streams import Streams
+from twitch.helix.resources.videos import Videos
+from .model import Model
+from .stream import Stream
 
 
 class User(Model):
@@ -10,16 +13,16 @@ class User(Model):
     def __init__(self, api: API, data: Dict[str, Any]):
         super().__init__(api, data)
 
-        self.broadcaster_type: str = self.data.get('broadcaster_type')
-        self.description: str = self.data.get('description')
-        self.display_name: str = self.data.get('display_name')
-        self.email: str = self.data.get('email')
-        self.id: str = self.data.get('id')
-        self.login: str = self.data.get('login')
-        self.offline_image_url: str = self.data.get('offline_image_url')
-        self.profile_image_url: str = self.data.get('profile_image_url')
-        self.type: str = self.data.get('type')
-        self.view_count: int = self.data.get('view_count')
+        self.broadcaster_type: str = data.get('broadcaster_type')
+        self.description: str = data.get('description')
+        self.display_name: str = data.get('display_name')
+        self.email: str = data.get('email')
+        self.id: str = data.get('id')
+        self.login: str = data.get('login')
+        self.offline_image_url: str = data.get('offline_image_url')
+        self.profile_image_url: str = data.get('profile_image_url')
+        self.type: str = data.get('type')
+        self.view_count: int = data.get('view_count')
 
     def __str__(self):
         return self.login

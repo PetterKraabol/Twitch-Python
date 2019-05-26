@@ -1,9 +1,9 @@
 from typing import List, Union, Tuple, Generator
 
+import twitch.helix as helix
+import twitch.v5 as v5
 from twitch.api import API
-from twitch.helix.models import Video
-from twitch.helix.resources import Resource
-from twitch.v5.resources import Comments
+from .resource import Resource
 
 
 class VideosAPIException(Exception):
@@ -53,7 +53,7 @@ class Videos(Resource['helix.Video']):
         # todo: maybe raise VideosAPIException('A user_id or a game_id must be specified.')
         return len([key for key in self._kwargs.keys() if key in ['user_id', 'game_id']]) == 1
 
-    def _cache_videos(self, videos: List[Video]) -> None:
+    def _cache_videos(self, videos: List['helix.Video']) -> None:
         """
         Custom video cache
         Cache individual videos
@@ -64,18 +64,18 @@ class Videos(Resource['helix.Video']):
             for video in videos:
                 API.SHARED_CACHE.set(f'{Videos.CACHE_PREFIX}{video.id}', video.data)
 
-    def _handle_pagination_response(self, response: dict) -> List[Video]:
+    def _handle_pagination_response(self, response: dict) -> List['helix.Video']:
         """
         Custom handling for video pagination
         :param response: API response data
         :return: Videos
         """
-        videos: List[Video] = [Video(api=self._api, data=video) for video in response['data']]
+        videos: List['helix.Video'] = [helix.Video(api=self._api, data=video) for video in response['data']]
         self._cache_videos(videos)
 
         return videos
 
-    def _next_videos_page(self, ignore_cache: bool = False) -> List[Video]:
+    def _next_videos_page(self, ignore_cache: bool = False) -> List['helix.Video']:
         """
         Video pagination
         :param ignore_cache: Ignore API cache
@@ -95,7 +95,7 @@ class Videos(Resource['helix.Video']):
         for video_id in video_ids:
             cache_data: dict = API.SHARED_CACHE.get(f'{Videos.CACHE_PREFIX}{video_id}')
             if cache_data:
-                self._data.append(Video(api=self._api, data=cache_data))
+                self._data.append(helix.Video(api=self._api, data=cache_data))
                 cache_hits.append(video_id)
 
         return cache_hits
@@ -122,7 +122,7 @@ class Videos(Resource['helix.Video']):
                 self._kwargs['id'] = remaining_video_ids[:Videos.ID_API_LIMIT]
 
                 # Ignore default caching method, as we want to cache individual videos and not a collection of videos.
-                videos: List[Video] = self._next_videos_page(ignore_cache=True)
+                videos: List[helix.Video] = self._next_videos_page(ignore_cache=True)
 
                 # Save videos
                 self._data.extend(videos)
@@ -132,6 +132,6 @@ class Videos(Resource['helix.Video']):
                                                                                         Videos.ID_API_LIMIT:]
 
     @property
-    def comments(self) -> Generator[Tuple[Video, Comments], None, None]:
+    def comments(self) -> Generator[Tuple['helix.Video', 'v5.Comments'], None, None]:
         for video in self:
             yield video, video.comments

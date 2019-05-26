@@ -1,11 +1,11 @@
 from typing import List, Union, Generator, Tuple, Dict
 
+import twitch.helix as helix
 from twitch.api import API
-from twitch.helix.models import User, Stream
-from twitch.helix.resources import Resource, Videos
+from .resource import Resource
 
 
-class Users(Resource[User]):
+class Users(Resource['helix.User']):
 
     def __init__(self, api: API, *args):
         super().__init__(api=api, path='users')
@@ -32,7 +32,7 @@ class Users(Resource[User]):
                     cache_key: str = f'helix.users.{key}.{user}'
                     cache_data: dict = API.SHARED_CACHE.get(cache_key)
                     if cache_data:
-                        self._data.append(User(api=self._api, data=cache_data))
+                        self._data.append(helix.User(api=self._api, data=cache_data))
                         cache_hits[key].append(user)
 
             # Remove cached users from params
@@ -45,7 +45,7 @@ class Users(Resource[User]):
             for data in self._api.get(self._path, params=params, ignore_cache=True)['data']:
 
                 # Create and append user)
-                user = User(api=self._api, data=data)
+                user = helix.User(api=self._api, data=data)
                 self._data.append(user)
 
                 # Save to cache
@@ -62,11 +62,11 @@ class Users(Resource[User]):
     def _pagination_stream_done(self) -> None:
         pass
 
-    def videos(self, **kwargs) -> Generator[Tuple[User, Videos], None, None]:
+    def videos(self, **kwargs) -> Generator[Tuple['helix.User', 'helix.Videos'], None, None]:
         for user in self:
             yield user, user.videos(**kwargs)
 
     @property
-    def streams(self) -> Generator[Tuple[User, Stream], None, None]:
+    def streams(self) -> Generator[Tuple['helix.User', 'helix.Stream'], None, None]:
         for user in self:
             yield user, user.stream

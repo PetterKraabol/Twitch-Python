@@ -11,7 +11,8 @@ __all__: List[Callable] = [
     Follows,
     Games,
     Resource,
-    Streams, StreamNotFound,
+    Streams,
+    StreamNotFound,
     Users,
     Videos,
 ]

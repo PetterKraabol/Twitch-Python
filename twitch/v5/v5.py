@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import List, Union
 
-from .resources import Comments
+import twitch.v5 as v5
 from twitch.api import API
 
 
@@ -22,5 +22,5 @@ class V5:
 
         self.api = API(V5.BASE_URL, self.client_id, use_cache=self.use_cache, request_rate=self.request_rate)
 
-    def comments(self, video_id: Union[str, int]) -> Comments:
-        return Comments(api=self.api, video_id=video_id)
+    def comments(self, video_id: Union[str, int]) -> 'v5.Comments':
+        return v5.Comments(api=self.api, video_id=video_id)
