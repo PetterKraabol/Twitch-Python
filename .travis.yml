@@ -4,4 +4,4 @@ python:
 install:
   - 'pip install pipenv'
   - 'pipenv sync'
-script: 'python -m pytest --cov twitch --cov-report term tests/'
+script: 'pipenv run python -m pytest --cov twitch --cov-report term tests/'
