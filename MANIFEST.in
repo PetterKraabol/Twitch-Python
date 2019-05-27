@@ -1,1 +1,1 @@
-include readme.md license Pipfile Pipfile.lock
+include readme.md LICENSE Pipfile Pipfile.lock
