@@ -6,9 +6,9 @@ name = "pypi"
 [packages]
 requests = "*"
 rx = "*"
+pytest = "*"
 
 [dev-packages]
-httmock = "*"
 httpretty = "*"
 pipenv = "*"
 twine = "*"
