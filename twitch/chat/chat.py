@@ -1,7 +1,7 @@
 import time
 from typing import Optional
 
-from rx.subjects import Subject
+from rx.subject import Subject
 
 import twitch
 import twitch.chat as chat

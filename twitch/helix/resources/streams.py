@@ -17,7 +17,7 @@ class Streams(Resource['helix.Stream']):
         response: dict = self._api.get(self._path, params=kwargs)
 
         if response['data']:
-            self._data = [Stream(api=self._api, data=video) for video in
+            self._data = [helix.Stream(api=self._api, data=video) for video in
                           self._api.get(self._path, params=kwargs)['data']]
         else:
             raise StreamNotFound('No stream was found')

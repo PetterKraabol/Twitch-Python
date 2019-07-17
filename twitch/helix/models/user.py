@@ -31,6 +31,14 @@ class User(Model):
     def stream(self) -> 'helix.Stream':
         return helix.Streams(api=self._api, user_id=int(self.id))[0]
 
+    @property
+    def is_live(self) -> bool:
+        try:
+            if self.stream:
+                return True
+        except helix.StreamNotFound:
+            return False
+
     def following(self, **kwargs) -> 'helix.Follows':
         kwargs['from_id'] = self.id
         return helix.Follows(api=self._api, follow_type='following', **kwargs)

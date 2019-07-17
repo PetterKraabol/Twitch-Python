@@ -3,7 +3,7 @@ import socket
 import threading
 from typing import List
 
-from rx.subjects import Subject
+from rx.subject import Subject
 
 
 class IRC(threading.Thread):
