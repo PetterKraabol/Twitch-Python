@@ -34,7 +34,7 @@ class Helix:
         if self.bearer_token:
             self.bearer_token = 'Bearer ' + self.bearer_token.lower().lstrip('bearer').strip()
 
-        self.api = API(Helix.BASE_URL, self.client_id, use_cache=self.use_cache, bearer_token=self.bearer_token)
+        self.api = API(Helix.BASE_URL, self.client_id, use_cache=self.use_cache, cache_duration=self.cache_duration, bearer_token=self.bearer_token)
 
     def users(self, *args) -> 'helix.Users':
         return helix.Users(self.api, *args)
