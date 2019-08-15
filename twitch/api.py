@@ -76,9 +76,6 @@ class API:
         url: str = self._url(path=path)
         request = requests.Request(method, url, **kwargs).prepare()
         cache_key: str = f'{method}:{request.url}'
-        print(cache_key)
-
-        print('Request', url, request.url)
 
         # Cache lookup
         if self.use_cache and not ignore_cache and API.SHARED_CACHE.get(cache_key):
