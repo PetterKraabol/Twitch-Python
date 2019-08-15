@@ -19,7 +19,7 @@ class Cache:
         return expiration
 
     def has(self, key: str) -> bool:
-        return key in self._store
+        return key in self._store.keys()
 
     def expired(self, key: str) -> bool:
         return not self.has(key) or self._store[key][Cache.EXPIRATION_FIELD] > datetime.now()
@@ -34,7 +34,7 @@ class Cache:
             return self._store[key][Cache.EXPIRATION_FIELD]
 
     def flush(self) -> None:
-        self._store = {}
+        self._store.clear()
 
     def remove(self, key) -> None:
         if self.has(key):

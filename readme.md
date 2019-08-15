@@ -50,7 +50,7 @@ for comment in helix.video(318017128).comments:
     print(comment.commenter.display_name)
 
 
-for video, comments in helix.videos([318017128, 317650435]).comments():
+for video, comments in helix.videos([318017128, 317650435]).comments:
     for comment in comments:
         print(comment.commenter.display_name, comment.message.body)
 
