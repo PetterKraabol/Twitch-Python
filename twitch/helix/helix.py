@@ -27,10 +27,14 @@ class Helix:
         self.client_secret: str = client_secret
 
         # Format bearer token
-        if self.bearer_token:
-            self.bearer_token = 'Bearer ' + self.bearer_token.lower().lstrip('bearer').strip()
+        if bearer_token:
+            bearer_token = 'Bearer ' + bearer_token.lower().lstrip('bearer').strip()
 
-        self.api = API(Helix.BASE_URL, client_id, use_cache=use_cache, cache_duration=cache_duration, bearer_token=bearer_token)
+        self.api = API(Helix.BASE_URL,
+                       client_id,
+                       use_cache=use_cache,
+                       cache_duration=cache_duration,
+                       bearer_token=bearer_token)
 
     def users(self, *args) -> 'helix.Users':
         return helix.Users(self.api, *args)
