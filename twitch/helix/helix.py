@@ -24,17 +24,13 @@ class Helix:
         :param cache_duration: Cache duration
         :param bearer_token: API bearer token
         """
-        self.client_id: str = client_id
         self.client_secret: str = client_secret
-        self.use_cache: bool = use_cache
-        self.cache_duration: Optional[timedelta] = cache_duration
-        self.bearer_token: Optional[str] = bearer_token
 
         # Format bearer token
         if self.bearer_token:
             self.bearer_token = 'Bearer ' + self.bearer_token.lower().lstrip('bearer').strip()
 
-        self.api = API(Helix.BASE_URL, self.client_id, use_cache=self.use_cache, cache_duration=self.cache_duration, bearer_token=self.bearer_token)
+        self.api = API(Helix.BASE_URL, client_id, use_cache=use_cache, cache_duration=cache_duration, bearer_token=bearer_token)
 
     def users(self, *args) -> 'helix.Users':
         return helix.Users(self.api, *args)
