@@ -2,6 +2,6 @@ language: python
 python:
   - '3.7'
 install:
-  - 'pip install pipenv'
-  - 'pipenv sync'
+  - 'pip install pipenv --upgrade'
+  - 'pipenv install --dev'
 script: 'pipenv run python setup.py test'

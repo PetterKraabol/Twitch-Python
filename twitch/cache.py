@@ -10,19 +10,22 @@ class Cache:
         self._duration: timedelta = duration or timedelta(minutes=30)
 
     def get(self, key: str, ignore_expiration: bool = False) -> Optional[dict]:
-        if self.has(key) and (ignore_expiration or self.expired(key)):
+        if self.has(key) and (ignore_expiration or not self.expired(key)):
             return self._store[key]['value']
+        else:
+            return None
 
     def set(self, key: str, value: dict, duration: Optional[timedelta] = None) -> datetime:
         expiration: datetime = datetime.now() + (duration or self._duration)
+
         self._store[key] = {**{'value': value}, **{f'{Cache.EXPIRATION_FIELD}': expiration}}
         return expiration
 
     def has(self, key: str) -> bool:
-        return key in self._store
+        return key in self._store.keys()
 
     def expired(self, key: str) -> bool:
-        return not self.has(key) or self._store[key][Cache.EXPIRATION_FIELD] > datetime.now()
+        return self.has(key) and self._store[key][Cache.EXPIRATION_FIELD] < datetime.now()
 
     def set_expiration(self, key: str, expiration: datetime) -> None:
         if self.has(key):

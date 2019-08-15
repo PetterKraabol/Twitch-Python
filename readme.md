@@ -46,22 +46,22 @@ print(helix.video(318017128).title)
 ```python
 # Video Comments (VOD chat)
 
-for comment in helix.video(318017128).comments():
+for comment in helix.video(318017128).comments:
     print(comment.commenter.display_name)
 
 
-for video, comments in helix.videos([318017128, 317650435]).comments():
+for video, comments in helix.videos([318017128, 317650435]).comments:
     for comment in comments:
         print(comment.commenter.display_name, comment.message.body)
 
 
-for video, comments in helix.user('sodapoppin').videos().comments():
+for video, comments in helix.user('sodapoppin').videos().comments:
         for comment in comments:
             print(comment.commenter.display_name, comment.message.body)
 
 
 for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
-        for video, comments in videos.comments():
+        for video, comments in videos.comments:
             for comment in comments:
                 print(comment.commenter.display_name, comment.message.body)
 ```
@@ -70,7 +70,7 @@ for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
 # Twitch Chat
 
 twitch.Chat(channel='#sodapoppin', nickname='zarlach', oauth='oauth:xxxxxx').subscribe(
-        lambda message: print(message.channel, message.user().display_name, message.text))
+        lambda message: print(message.channel, message.user.display_name, message.text))
 ```
 
 ### Features

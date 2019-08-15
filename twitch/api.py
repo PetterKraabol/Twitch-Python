@@ -56,7 +56,7 @@ class API:
 
     @staticmethod
     def flush_cache():
-        API.SHARED_CACHE = {}
+        API.SHARED_CACHE.flush()
 
     def _handle_rate_limit(self) -> None:
         if self.handle_rate_limit and self.rate_limit_remaining == 0:
@@ -76,6 +76,9 @@ class API:
         url: str = self._url(path=path)
         request = requests.Request(method, url, **kwargs).prepare()
         cache_key: str = f'{method}:{request.url}'
+        print(cache_key)
+
+        print('Request', url, request.url)
 
         # Cache lookup
         if self.use_cache and not ignore_cache and API.SHARED_CACHE.get(cache_key):
