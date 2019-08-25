@@ -13,6 +13,7 @@ twine = "*"
 pytest-cov = "*"
 pytest = "*"
 responses = "*"
+wheel = "*"
 
 [requires]
 python_version = "3.7"
