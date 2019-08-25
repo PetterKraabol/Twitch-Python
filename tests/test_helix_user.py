@@ -84,6 +84,21 @@ class TestHelixUser(unittest.TestCase):
 
     @responses.activate
     def test_custom_user_cache(self):
+        responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=zarlach',
+                      match_querystring=True,
+                      json={
+                          'data': [{'id': '24250859',
+                                    'login': 'zarlach',
+                                    'display_name': 'Zarlach',
+                                    'type': '',
+                                    'broadcaster_type': '',
+                                    'description': '',
+                                    'profile_image_url': 'https://static-cdn.jtvnw.net/jtv_user_pictures/zarlach-profile_image-1cb98e7eadb5918a-300x300.png',
+                                    'offline_image_url': 'https://static-cdn.jtvnw.net/jtv_user_pictures/zarlach-channel_offline_image-f2d036ac9582d793-1920x1080.png',
+
+                                    'view_count': 1664}]
+                      })
+        
         responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=sodapoppin&login=zarlach',
                       match_querystring=True,
                       json={
