@@ -13,6 +13,7 @@ class Helix:
                  client_secret: str = None,
                  use_cache: bool = False,
                  cache_duration: Optional[timedelta] = None,
+                 handle_rate_limit: bool = True,
                  bearer_token: Optional[str] = None):
         """
         Helix API (New Twitch API)
@@ -34,6 +35,7 @@ class Helix:
                        client_id,
                        use_cache=use_cache,
                        cache_duration=cache_duration,
+                       handle_rate_limit=handle_rate_limit,
                        bearer_token=bearer_token)
 
     def users(self, *args) -> 'helix.Users':

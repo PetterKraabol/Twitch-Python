@@ -98,7 +98,7 @@ class TestHelixUser(unittest.TestCase):
 
                                     'view_count': 1664}]
                       })
-        
+
         responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=sodapoppin&login=zarlach',
                       match_querystring=True,
                       json={
