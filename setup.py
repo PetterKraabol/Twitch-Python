@@ -39,6 +39,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/PetterKraabol/Twitch-Python',
-    version='0.0.15',
+    version='0.0.16',
     zip_safe=True,
 )

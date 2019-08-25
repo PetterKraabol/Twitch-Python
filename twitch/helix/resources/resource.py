@@ -50,7 +50,9 @@ class Resource(BaseResource, Generic[T]):
             for element in elements:
                 yield element
 
-            remaining = 0 if remaining is not None and len(elements) > remaining else remaining - self._kwargs['first']
+            # Decrement remaining if not None
+            if remaining is not None:
+                remaining = 0 if len(elements) > remaining else remaining - self._kwargs['first']
 
             # If no next cursor, stop
             if not self._cursor:
@@ -79,7 +81,9 @@ class Resource(BaseResource, Generic[T]):
         :param response: Response from pagination
         :return: None
         """
-        pass
+        elements: List[T] = [T(api=self._api, data=data) for data in response['data']]
+
+        return elements
 
     def _next_page(self, ignore_cache: bool = False) -> dict:
         """

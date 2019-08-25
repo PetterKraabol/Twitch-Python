@@ -19,8 +19,7 @@ class TestTwitchPython(unittest.TestCase):
         self.assertFalse(helix.api.SHARED_CACHE.expired('key'))
 
         # Expiration
-        helix.api.SHARED_CACHE.set('key-with-expiration', {'data': 'value'}, duration=timedelta(seconds=1))
-        time.sleep(2)
+        helix.api.SHARED_CACHE.set('key-with-expiration', {'data': 'value'}, duration=timedelta(seconds=-1))
 
         # Key is expired
         self.assertTrue(helix.api.SHARED_CACHE.expired('key-with-expiration'))

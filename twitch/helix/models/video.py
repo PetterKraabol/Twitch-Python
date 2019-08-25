@@ -13,6 +13,7 @@ class Video(Model):
 
         self.id: str = data.get('id')
         self.user_id: str = data.get('user_id')
+        self.user_name: str = data.get('user_name')
         self.title: str = data.get('title')
         self.description: str = data.get('description')
         self.created_at: str = data.get('created_at')

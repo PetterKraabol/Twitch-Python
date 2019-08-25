@@ -8,11 +8,11 @@ requests = "*"
 rx = ">=3.0.0"
 
 [dev-packages]
-httpretty = "*"
 pipenv = "*"
 twine = "*"
 pytest-cov = "*"
 pytest = "*"
+responses = "*"
 
 [requires]
 python_version = "3.7"
