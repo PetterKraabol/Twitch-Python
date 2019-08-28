@@ -26,7 +26,7 @@ helix = twitch.Helix('client-id')
 ```python
 # Users
 
-for user in helix.users('sodapoppin', 'reckful', 24250859):
+for user in helix.users(['sodapoppin', 'reckful', 24250859]):
     print(user.display_name)
 
 
@@ -60,7 +60,7 @@ for video, comments in helix.user('sodapoppin').videos().comments:
             print(comment.commenter.display_name, comment.message.body)
 
 
-for user, videos in helix.users('sodapoppin', 'reckful').videos(first=5):
+for user, videos in helix.users(['sodapoppin', 'reckful']).videos(first=5):
         for video, comments in videos.comments:
             for comment in comments:
                 print(comment.commenter.display_name, comment.message.body)

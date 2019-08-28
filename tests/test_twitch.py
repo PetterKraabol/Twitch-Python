@@ -1,6 +1,5 @@
-import time
-from datetime import timedelta
 import unittest
+from datetime import timedelta
 
 import twitch
 
