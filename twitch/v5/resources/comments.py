@@ -7,7 +7,7 @@ from twitch.baseresource import BaseResource
 
 class Comments(BaseResource['v5.Comment']):
 
-    def __init__(self, video_id: Union[str, int], api: API):
+    def __init__(self, api: API, video_id: Union[str, int]):
         super().__init__(api=api, path='videos/{video_id}/comments')
         self._video_id: str = str(video_id)
         self._api = api

@@ -32,7 +32,8 @@ class Helix:
             bearer_token = 'Bearer ' + bearer_token.lower().lstrip('bearer').strip()
 
         self.api = API(Helix.BASE_URL,
-                       client_id,
+                       client_id=client_id,
+                       client_secret=client_secret,
                        use_cache=use_cache,
                        cache_duration=cache_duration,
                        handle_rate_limit=handle_rate_limit,

@@ -13,6 +13,7 @@ class API:
     def __init__(self,
                  base_url: Optional[str] = None,
                  client_id: Optional[str] = None,
+                 client_secret: Optional[str] = None,
                  use_cache: Optional[bool] = False,
                  request_rate: Optional[int] = None,
                  bearer_token: Optional[str] = None,
@@ -29,6 +30,7 @@ class API:
         """
         self.base_url: Optional[str] = base_url
         self.client_id: Optional[str] = client_id
+        self.client_secret: Optional[str] = client_secret
         self.use_cache: bool = use_cache
         self.request_rate: Optional[int] = request_rate
         self.bearer_token: Optional[str] = bearer_token

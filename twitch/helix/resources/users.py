@@ -24,6 +24,10 @@ class Users(Resource['helix.User']):
             ]
         ]
 
+        # todo: Authenticated user if bearer token is provided
+        if not len(params['id'] + params['login']):
+            pass
+
         # Custom user caching
         if self._api.use_cache:
             cache_hits: Dict[str, list] = {'id': [], 'login': []}
@@ -52,6 +56,7 @@ class Users(Resource['helix.User']):
                 if self._api.use_cache:
                     API.SHARED_CACHE.set(f'helix.users.login.{user.login}', data)
                     API.SHARED_CACHE.set(f'helix.users.id.{user.id}', data)
+
 
     def _can_paginate(self) -> bool:
         return False

@@ -1,6 +1,7 @@
 from typing import Dict, Any
 
 import twitch.helix as helix
+import twitch.tmi as tmi
 from twitch.api import API
 from .model import Model
 
@@ -38,6 +39,14 @@ class User(Model):
                 return True
         except helix.StreamNotFound:
             return False
+
+    @property
+    def chatters(self) -> 'tmi.Chatters':
+        source = tmi.TMI('')
+        source.api = self._api
+        source.api.base_url = tmi.TMI.BASE_URL
+
+        return source.chatters(self.login)
 
     def following(self, **kwargs) -> 'helix.Follows':
         kwargs['from_id'] = self.id
