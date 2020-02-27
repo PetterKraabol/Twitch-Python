@@ -32,8 +32,9 @@ class IRC(threading.Thread):
                 if text.find('PING') >= 0:
                     self.send_raw('PONG ' + text.split()[1])
 
-                if text.find('Login authentication failed') >= 0:
-                    logging.fatal('IRC authentication error:', data)
+                if text.find('Login authentication failed') > 0:
+                    logging.fatal('IRC authentication error: ' + text or '')
+                    return
 
                 # Publish data to subscribers
                 self.incoming.on_next(data)

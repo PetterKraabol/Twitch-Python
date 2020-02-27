@@ -47,4 +47,5 @@ class Chat(Subject):
         self.irc.send_message(message=message, channel=self.channel)
 
     def __del__(self):
+        self.irc.active = False
         self.dispose()

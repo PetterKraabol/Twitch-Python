@@ -2,17 +2,14 @@
 
 import os
 
-from pipenv.project import Project
-from pipenv.utils import convert_deps_to_pip
 from setuptools import setup, find_packages
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
     readme = f.read()
 
-pipfile = Project(chdir=False).parsed_pipfile
-requirements = convert_deps_to_pip(pipfile['packages'], r=False)
-test_requirements = convert_deps_to_pip(pipfile['dev-packages'], r=False)
+requirements = ['requests', 'rx>=3.0.0']
+test_requirements = ['pipenv', 'twine', 'pytest-cov', 'pytest', 'responses', 'wheel']
 setup_requirements = ['pipenv', 'setuptools']
 
 setup(
@@ -24,6 +21,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     description='Twitch module for Python',
     install_requires=requirements,
@@ -39,6 +37,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/PetterKraabol/Twitch-Python',
-    version='0.0.17',
+    version='0.0.18',
     zip_safe=True,
 )
