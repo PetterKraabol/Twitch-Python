@@ -9,7 +9,7 @@ with open(os.path.join(this_directory, 'readme.md'), encoding='utf-8') as f:
     readme = f.read()
 
 requirements = ['requests', 'rx>=3.0.0']
-test_requirements = ['pipenv', 'twine', 'pytest-cov', 'pytest', 'responses', 'wheel']
+test_requirements = ['pipenv', 'twine', 'pytest-cov', 'pytest', 'responses', 'wheel', 'tox']
 setup_requirements = ['pipenv', 'setuptools']
 
 setup(
