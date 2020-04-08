@@ -50,7 +50,7 @@ class User(Model):
 
     def following(self, **kwargs) -> 'helix.Follows':
         kwargs['from_id'] = self.id
-        return helix.Follows(api=self._api, follow_type='following', **kwargs)
+        return helix.Follows(api=self._api, follow_type='followings', **kwargs)
 
     def followers(self, **kwargs) -> 'helix.Follows':
         kwargs['to_id'] = self.id
