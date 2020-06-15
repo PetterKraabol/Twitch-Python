@@ -9,7 +9,7 @@ import twitch.chat as chat
 
 class Chat(Subject):
 
-    def __init__(self, channel: str, nickname: str, oauth: str, helix: Optional['twitch.Helix'] = None):
+    def __init__(self, channel: str, nickname: str, oauth: str, helix: Optional['twitch.Helix'] = None, timeout = 0):
         """
         :param channel: Channel name
         :param nickname: User nickname
@@ -19,7 +19,7 @@ class Chat(Subject):
         super().__init__()
         self.helix: Optional['twitch.Helix'] = helix
 
-        self.irc = chat.IRC(nickname, password=oauth)
+        self.irc = chat.IRC(nickname, password=oauth, timeout=timeout)
         self.irc.incoming.subscribe(self._message_handler)
         self.irc.start()
 
