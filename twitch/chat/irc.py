@@ -12,8 +12,8 @@ class IRC(threading.Thread):
         super().__init__()
 
         self.timeout = timeout
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    
-        self.reset_timeout()   
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.reset_timeout()
         self.address: str = address
         self.port: int = port
         self.channels: List[str] = []
@@ -21,7 +21,7 @@ class IRC(threading.Thread):
         self.password: str = 'oauth:' + password.lstrip('oauth:')
         self.active: bool = True
         self.incoming: Subject = Subject()
-        self.thread_close: Subject = Subject()        
+        self.thread_close: Subject = Subject()
 
     def run(self):
         self.connect()
@@ -41,7 +41,7 @@ class IRC(threading.Thread):
                     return
 
                 # Publish data to subscribers
-                self.incoming.on_next(data)  
+                self.incoming.on_next(data)
 
             except IOError:
                 break
@@ -50,7 +50,7 @@ class IRC(threading.Thread):
 
     def reset_timeout(self):
         if(self.timeout != 0):
-            self.socket.settimeout(self.timeout) 
+            self.socket.settimeout(self.timeout)
 
     def send_raw(self, message: str) -> None:
         data = (message.lstrip('\n') + '\n').encode('utf-8')
