@@ -1,6 +1,8 @@
 from datetime import timedelta
 from typing import List, Union, Optional
 
+import requests
+
 import twitch.helix as helix
 from twitch.api import API
 
@@ -27,9 +29,14 @@ class Helix:
         """
         self.client_secret: str = client_secret
 
-        # Format bearer token
-        if bearer_token:
-            bearer_token = 'Bearer ' + bearer_token.lower().lstrip('bearer').strip()
+        if bearer_token is None:
+            if client_id is None and client_secret is None:
+                print("Missing Twitch client id secret")
+
+            bearer_token = requests.post(f"https://id.twitch.tv/oauth2/token"
+                                         f"?client_id={client_id}"
+                                         f"&client_secret={client_secret}"
+                                         "&grant_type=client_credentials").json()['access_token']
 
         self.api = API(Helix.BASE_URL,
                        client_id=client_id,
@@ -37,7 +44,7 @@ class Helix:
                        use_cache=use_cache,
                        cache_duration=cache_duration,
                        handle_rate_limit=handle_rate_limit,
-                       bearer_token=bearer_token)
+                       bearer_token='Bearer ' + bearer_token.lower().lstrip('bearer').strip())
 
     def users(self, *args) -> 'helix.Users':
         return helix.Users(self.api, *args)

@@ -20,7 +20,7 @@ An object-oriented approach to accessing the Twitch API and live chat with relat
 
 import twitch
 
-helix = twitch.Helix('client-id')
+helix = twitch.Helix('client-id', 'client-secret')
 ```
 
 ```python
