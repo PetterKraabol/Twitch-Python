@@ -46,9 +46,10 @@ class TestHelixVideo(unittest.TestCase):
     }
 
     def setUp(self) -> None:
-        responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=zarlach',
+        responses.add(responses.GET, 'https://id.twitch.tv/oauth2/token?client_token=id&client_secret=secret&grant_type=client_credentials',
                       match_querystring=True,
                       json={'access_token': 'token'})
+        
         responses.add(responses.GET, 'https://api.twitch.tv/helix/videos?id=471855782',
                       match_querystring=True,
                       json={
