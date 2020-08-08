@@ -78,7 +78,7 @@ class TestHelixUser(unittest.TestCase):
         # Users have custom caching, such that url should not be cached
         self.assertFalse(helix.api.SHARED_CACHE.has('GET:https://api.twitch.tv/helix/users?login=zarlach'))
 
-        # Cache entries by login name and id number
+        # Cache entries by login name and id numberit
         self.assertTrue(helix.api.SHARED_CACHE.has('helix.users.login.zarlach'))
         self.assertTrue(helix.api.SHARED_CACHE.has('helix.users.id.24250859'))
 
