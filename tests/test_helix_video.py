@@ -46,6 +46,9 @@ class TestHelixVideo(unittest.TestCase):
     }
 
     def setUp(self) -> None:
+        responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=zarlach',
+                      match_querystring=True,
+                      json={'access_token': 'token'})
         responses.add(responses.GET, 'https://api.twitch.tv/helix/videos?id=471855782',
                       match_querystring=True,
                       json={
@@ -65,7 +68,7 @@ class TestHelixVideo(unittest.TestCase):
 
     @responses.activate
     def test_video(self):
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
 
         # Get display name to display name
         self.assertEqual(helix.video('471855782').user_name, 'sodapoppin')
@@ -73,14 +76,14 @@ class TestHelixVideo(unittest.TestCase):
     @responses.activate
     def test_first_videos(self):
         # Should returned cached data from above
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
 
         for video, user_name in zip(helix.user('sodapoppin').videos(first=2), ['sodapoppin', 'sodapoppin']):
             self.assertEqual(video.user_name, user_name)
 
     @responses.activate
     def test_custom_video_cache(self):
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
         _ = helix.video(471855782)
 
         # Videos have custom caching, such that url should not be cached

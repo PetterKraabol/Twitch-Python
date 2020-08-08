@@ -7,7 +7,7 @@ import twitch
 class TestTwitchPython(unittest.TestCase):
 
     def test_cache(self):
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
 
         helix.api.SHARED_CACHE.set('key', {'data': 'value'})
 

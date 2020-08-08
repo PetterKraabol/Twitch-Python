@@ -36,6 +36,10 @@ class TestHelixUser(unittest.TestCase):
     }
 
     def setUp(self) -> None:
+        responses.add(responses.GET, 'https://id.twitch.tv/oauth2/token?client_token=id&client_secret=secret&grant_type=client_credentials',
+                      match_querystring=True,
+                      json={'access_token': 'token'})
+
         responses.add(responses.GET, 'https://api.twitch.tv/helix/users?login=zarlach',
                       match_querystring=True,
                       json={'data': [TestHelixUser.user['zarlach']]})
@@ -53,7 +57,7 @@ class TestHelixUser(unittest.TestCase):
 
     @responses.activate
     def test_user(self):
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
 
         # Get display name to display name
         self.assertEqual(helix.user('zarlach').display_name, 'Zarlach')
@@ -61,14 +65,14 @@ class TestHelixUser(unittest.TestCase):
     @responses.activate
     def test_users(self):
         # Should returned cached data from above
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
 
         for user, display_name in zip(helix.users([24250859, 'sodapoppin']), ['Zarlach', 'sodapoppin']):
             self.assertEqual(user.display_name, display_name)
 
     @responses.activate
     def test_custom_user_cache(self):
-        helix = twitch.Helix('client-id', use_cache=True)
+        helix = twitch.Helix(client_id='id', bearer_token='token', use_cache=True)
         helix.users(['zarlach', 'sodapoppin'])
 
         # Users have custom caching, such that url should not be cached
