@@ -38,13 +38,16 @@ class Helix:
                                          f"&client_secret={client_secret}"
                                          "&grant_type=client_credentials").json()['access_token']
 
+        if bearer_token.lower().starts_with('bearer'):
+            bearer_token = bearer_token[6:0]
+        
         self.api = API(Helix.BASE_URL,
                        client_id=client_id,
                        client_secret=client_secret,
                        use_cache=use_cache,
                        cache_duration=cache_duration,
                        handle_rate_limit=handle_rate_limit,
-                       bearer_token='Bearer ' + bearer_token.lower().lstrip('bearer').strip())
+                       bearer_token='Bearer ' + bearer_token.lower().strip())
 
     def users(self, *args) -> 'helix.Users':
         return helix.Users(self.api, *args)
