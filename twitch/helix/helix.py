@@ -38,9 +38,15 @@ class Helix:
                                          f"&client_secret={client_secret}"
                                          "&grant_type=client_credentials").json()['access_token']
 
+<<<<<<< HEAD
         if bearer_token.lower().startswith('bearer'):
             bearer_token = bearer_token[6:0]
 
+=======
+        if bearer_token.lower().starts_with('bearer'):
+            bearer_token = bearer_token[6:0]
+        
+>>>>>>> 4f0d3bd452d91d6c88b39cb1520566b0e0503344
         self.api = API(Helix.BASE_URL,
                        client_id=client_id,
                        client_secret=client_secret,
