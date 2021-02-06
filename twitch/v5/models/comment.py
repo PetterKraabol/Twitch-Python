@@ -75,10 +75,10 @@ class Comment(Model):
         self.content_type: str = data.get('content_type')
         self.content_id: str = data.get('content_id')
         self.content_offset_seconds: float = data.get('content_offset_seconds')
-        self.commenter: Commenter = Commenter(data.get('commenter'))
+        self.commenter: Commenter = Commenter(data.get('commenter')) if data.get('commenter') else None
         self.source: str = data.get('source')
         self.state: str = data.get('state')
-        self.message: Message = Message(data.get('message'))
+        self.message: Message = Message(data.get('message')) if data.get('message') else None
         self.more_replies: bool = data.get('more_replies')
 
     @property
