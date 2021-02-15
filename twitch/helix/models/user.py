@@ -21,6 +21,7 @@ class User(Model):
         self.profile_image_url: str = data.get('profile_image_url')
         self.type: str = data.get('type')
         self.view_count: int = data.get('view_count')
+        self.created_at: int = data.get('created_at')
 
     def __str__(self):
         return self.login
