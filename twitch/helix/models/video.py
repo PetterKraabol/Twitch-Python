@@ -76,4 +76,4 @@ class Video(Model):
                     duration_params[2] = int(match.groups()[1])
                 elif len(match.groups()) == 1:
                     duration_params[2] = int(match.groups()[0])
-        return Duration(**{'h': duration_params[0], 'm': duration_params[1], 's': duration_params[2]})
+        return Duration(h=duration_params[0], m=duration_params[1], s=duration_params[2])
