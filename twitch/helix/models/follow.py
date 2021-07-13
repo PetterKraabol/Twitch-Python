@@ -8,12 +8,17 @@ from .model import Model
 class Follow(Model):
 
     def __init__(self, api: API, data: Dict[str, Any]):
+        """
+        [reference](https://dev.twitch.tv/docs/api/reference#get-users-follows)
+        """
         super().__init__(api, data)
 
         self.from_id: str = data.get('from_id')
         self.from_name: str = data.get('from_name')
+        self.from_login: str = data.get('from_login')
         self.to_id: str = data.get('to_id')
         self.to_name: str = data.get('to_name')
+        self.to_login: str = data.get('to_login')
         self.followed_at: str = data.get('followed_at')
 
     @property
