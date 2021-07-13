@@ -68,7 +68,7 @@ class Video(Model):
                 regex = r'([\d]+)s$'
 
             matches = re.finditer(regex, self.duration, re.MULTILINE)
-            for matchNum, match in enumerate(matches, start=1):
+            for match_num, match in enumerate(matches, start=1):
                 if len(match.groups()) == 3:
                     duration_params = [int(x) for x in match.groups()]
                 elif len(match.groups()) == 2:
