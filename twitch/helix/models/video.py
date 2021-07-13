@@ -58,25 +58,22 @@ class Video(Model):
 
     @property
     def duration_fmt(self) -> Duration:
-        _ = [0, 0, 0]
+        duration_params = [0, 0, 0]
         if self.duration:
-            if "h" in self.duration:
-                regex = r"([\d]+)h([\d]+)m([\d]+)s$"
-                matches = re.finditer(regex, self.duration, re.MULTILINE)
-                for matchNum, match in enumerate(matches, start=1):
-                    if len(match.groups()) == 3:
-                        _ = [int(x) for x in match.groups()]
-            elif "m" in self.duration:
-                regex = r"([\d]+)m([\d]+)s$"
-                matches = re.finditer(regex, self.duration, re.MULTILINE)
-                for matchNum, match in enumerate(matches, start=1):
-                    if len(match.groups()) == 2:
-                        _[1] = int(match.groups()[0])
-                        _[2] = int(match.groups()[1])
-            elif "s" in self.duration:
-                regex = r"([\d]+)s$"
-                matches = re.finditer(regex, self.duration, re.MULTILINE)
-                for matchNum, match in enumerate(matches, start=1):
-                    if len(match.groups()) == 1:
-                        _[2] = int(match.groups()[0])
-        return Duration(**{"h": _[0], "m": _[1], "s": _[2]})
+            if 'h' in self.duration:
+                regex = r'([\d]+)h([\d]+)m([\d]+)s$'
+            elif 'm' in self.duration:
+                regex = r'([\d]+)m([\d]+)s$'
+            else:
+                regex = r'([\d]+)s$'
+
+            matches = re.finditer(regex, self.duration, re.MULTILINE)
+            for matchNum, match in enumerate(matches, start=1):
+                if len(match.groups()) == 3:
+                    duration_params = [int(x) for x in match.groups()]
+                elif len(match.groups()) == 2:
+                    duration_params[1] = int(match.groups()[0])
+                    duration_params[2] = int(match.groups()[1])
+                elif len(match.groups()) == 1:
+                    duration_params[2] = int(match.groups()[0])
+        return Duration(**{'h': duration_params[0], 'm': duration_params[1], 's': duration_params[2]})
