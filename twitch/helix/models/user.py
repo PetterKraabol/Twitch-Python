@@ -9,6 +9,9 @@ from .model import Model
 class User(Model):
 
     def __init__(self, api: API, data: Dict[str, Any]):
+        """
+        [reference](https://dev.twitch.tv/docs/api/reference#get-users)
+        """
         super().__init__(api, data)
 
         self.broadcaster_type: str = data.get('broadcaster_type')
@@ -21,7 +24,7 @@ class User(Model):
         self.profile_image_url: str = data.get('profile_image_url')
         self.type: str = data.get('type')
         self.view_count: int = data.get('view_count')
-        self.created_at: int = data.get('created_at')
+        self.created_at: str = data.get('created_at')
 
     def __str__(self):
         return self.login
