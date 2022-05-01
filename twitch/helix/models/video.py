@@ -31,9 +31,7 @@ class Video(Model):
 
     @property
     def comments(self) -> 'v5.Comments':
-        return v5.V5(client_id=self._api.client_id,
-                     use_cache=self._api.use_cache,
-                     cache_duration=self._api.cache_duration).comments(self.id)
+        return v5.V5.comments(self.id)
 
     @property
     def user(self) -> 'helix.User':
