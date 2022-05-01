@@ -7,6 +7,7 @@ from twitch.api import API
 
 class V5:
     BASE_URL: str = 'https://api.twitch.tv/v5/'
+    COMMENTS_CLIENT_ID: str = 'kimne78kx3ncx6brgo4mv6wki5h1ko'
 
     def __init__(self, client_id: str,
                  client_secret: str = None,
@@ -22,5 +23,6 @@ class V5:
                        cache_duration=cache_duration,
                        request_rate=request_rate)
 
-    def comments(self, video_id: Union[str, int]) -> 'v5.Comments':
-        return v5.Comments(api=self.api, video_id=video_id)
+    @staticmethod
+    def comments(video_id: Union[str, int]) -> 'v5.Comments':
+        return v5.Comments(api=API(V5.BASE_URL, V5.COMMENTS_CLIENT_ID), video_id=video_id)
