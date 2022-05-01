@@ -10,7 +10,7 @@ An object-oriented approach to accessing the Twitch API and live chat with relat
 
 ### Requirements
 
-* [Python 3.7 or newer](https://www.python.org/downloads/)
+* [Python 3.10 or newer](https://www.python.org/downloads/)
 * [A Twitch client ID](https://dev.twitch.tv/console/apps)
 
 ### Usage
