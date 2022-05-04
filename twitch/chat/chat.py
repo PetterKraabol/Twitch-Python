@@ -30,16 +30,23 @@ class Chat(Subject):
         # First messages are server connection messages,
         # which should be handled by joining the chat room.
         if not self.joined:
+            self.irc.activate_tags()
             self.irc.join_channel(self.channel)
             self.joined = True
 
         text = data.decode("UTF-8").strip('\n\r')
 
         if text.find('PRIVMSG') >= 0:
-            sender = text.split('!', 1)[0][1:]
+            if text[0] == '@':
+                block = text.split(' :')
+                tags = dict(t.split('=',1) for t in block[0][1:].split(';'))
+                sender = block[1].split('!', 1)[0]
+            else:
+                sender = text.split('!', 1)[0][1:]
+                tags = None
             message = text.split('PRIVMSG', 1)[1].split(':', 1)[1]
             self.on_next(
-                chat.Message(channel=self.channel, sender=sender, text=message, helix_api=self.helix, chat=self))
+                chat.Message(channel=self.channel, sender=sender, text=message, helix_api=self.helix, chat=self, tags=tags))
 
     def send(self, message: str) -> None:
         while not self.joined:
