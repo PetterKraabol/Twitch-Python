@@ -57,6 +57,9 @@ class IRC(threading.Thread):
         self.send_raw(f'PASS {self.password}')
         self.send_raw(f'NICK {self.nickname}')
 
+    def activate_tags(self) -> None:
+        self.send_raw(f'CAP REQ :twitch.tv/tags')
+
     def join_channel(self, channel: str) -> None:
         channel = channel.lstrip('#')
         self.channels.append(channel)
