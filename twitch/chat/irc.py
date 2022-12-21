@@ -5,6 +5,7 @@ from typing import List
 
 from rx.subject import Subject
 
+from utils import TwitchChatError
 
 class IRC(threading.Thread):
 
@@ -34,7 +35,7 @@ class IRC(threading.Thread):
 
                 if text.find('Login authentication failed') > 0:
                     logging.fatal('IRC authentication error: ' + text or '')
-                    return
+                    raise TwitchChatError(text or 'IRC authentication error')
 
                 # Publish data to subscribers
                 self.incoming.on_next(data)
