@@ -5,6 +5,9 @@ from typing import List
 
 from rx.subject import Subject
 
+class TwitchChatError(Exception):
+    pass
+
 
 class IRC(threading.Thread):
 
@@ -19,6 +22,7 @@ class IRC(threading.Thread):
         self.password: str = 'oauth:' + password.lstrip('oauth:')
         self.active: bool = True
         self.incoming: Subject = Subject()
+        self.exception = None
 
     def run(self):
         self.connect()
@@ -33,8 +37,9 @@ class IRC(threading.Thread):
                     self.send_raw('PONG ' + text.split()[1])
 
                 if text.find('Login authentication failed') > 0:
+                    # raise Exception(text or 'IRC authentication error')
                     logging.fatal('IRC authentication error: ' + text or '')
-                    return
+                    self.exception = TwitchChatError(text)
 
                 # Publish data to subscribers
                 self.incoming.on_next(data)
